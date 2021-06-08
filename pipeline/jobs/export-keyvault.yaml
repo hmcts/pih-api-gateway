@@ -1,0 +1,30 @@
+parameters:
+  - name: dependsOn
+    type: object
+    default: ''
+
+  - name: displayName
+    type: string
+
+  - name: subscription
+    type: string
+
+jobs:
+  - job: ExportKeyVault
+    dependsOn:
+      - ${{ if parameters.dependsOn }}:
+          - ${{ parameters.dependsOn }}
+    displayName: ${{ parameters.displayName }}
+    pool:
+      vmImage: 'ubuntu-18.04'
+    steps:
+      - task: AzureKeyVault@1
+        displayName: 'Export Secrets from KeyVault'
+        inputs:
+          azureSubscription: ${{ parameters.subscription }}
+          keyVaultName: pih-shared-kv-$(environment)
+          secretsFilter: 'pih-apim-sub-key'
+      - script: |
+          echo "##vso[task.setvariable variable=pih-apim-sub-key;isOutput=true;isSecret=true]$(pih-apim-sub-key)"
+        displayName: 'Export KeyVault Variables'
+        name: exportKeyVaultSecret

@@ -1,4 +1,4 @@
 data "azurerm_key_vault" "infra_key_vault" {
-  name                = "pih-shared-kv-${var.environment}"
-  resource_group_name = "pih-sharedservices-${var.environment}-rg"
+  name                = "pip-shared-kv-${var.environment}"
+  resource_group_name = "pip-sharedservices-${var.environment}-rg"
 }

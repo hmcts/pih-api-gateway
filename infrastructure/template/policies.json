@@ -1,0 +1,10 @@
+{
+  "policies": [
+    {
+      "operationId": "health-check",
+      "format": "application/vnd.ms-azure-apim.policy.raw+xml",
+      "templateFile": "pip-api-health-check-policy.xml",
+      "errorAction": "Stop"
+    }
+  ]
+}

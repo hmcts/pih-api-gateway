@@ -23,22 +23,22 @@ parameters:
     default:
     - name: sbox
       subscription: DTS-SHAREDSERVICES-SBOX
-      group: PIH-APIM-BUILD-SBOX
+      group: PIP-APIM-BUILD-SBOX
 
     - name: dev
       subscription: DTS-SHAREDSERVICES-DEV
-      group: PIH-APIM-BUILD-DEV
+      group: PIP-APIM-BUILD-DEV
 
     - name: test
       subscription: DTS-SHAREDSERVICES-TEST
-      group: PIH-APIM-BUILD-TEST
+      group: PIP-APIM-BUILD-TEST
 
     - name: stg
       subscription: DTS-SHAREDSERVICES-STG
-      group: PIH-APIM-BUILD-STG
+      group: PIP-APIM-BUILD-STG
 
 variables:
-  - group: PIH-APIM-Common
+  - group: PIP-APIM-Common
 
 stages:
   - stage: Validate
@@ -59,7 +59,7 @@ stages:
       parameters:
         displayName: Plan SBOX
         subscription: DTS-SHAREDSERVICES-SBOX
-        group: PIH-APIM-BUILD-SBOX
+        group: PIP-APIM-BUILD-SBOX
 
   - stage: PlanDEV
     dependsOn: Validate
@@ -69,7 +69,7 @@ stages:
       parameters:
         displayName: Plan DEV
         subscription: DTS-SHAREDSERVICES-DEV
-        group: PIH-APIM-BUILD-DEV
+        group: PIP-APIM-BUILD-DEV
 
   - stage: PlanTEST
     dependsOn: Validate
@@ -79,7 +79,7 @@ stages:
       parameters:
         displayName: Plan TEST
         subscription: DTS-SHAREDSERVICES-TEST
-        group: PIH-APIM-BUILD-TEST
+        group: PIP-APIM-BUILD-TEST
 
   - stage: PlanSTG
     dependsOn: Validate
@@ -89,13 +89,13 @@ stages:
       parameters:
         displayName: Plan STG
         subscription: DTS-SHAREDSERVICES-STG
-        group: PIH-APIM-BUILD-STG
+        group: PIP-APIM-BUILD-STG
 
   - stage: BuildSBOX
     dependsOn: PlanSbox
     condition: and(succeeded(), or(eq('${{ parameters.stage }}', 'SBOX'), contains('${{ parameters.stage }}', 'NONPROD'), contains('${{ parameters.stage }}', 'ALL')))
     variables:
-      - group: PIH-APIM-BUILD-SBOX
+      - group: PIP-APIM-BUILD-SBOX
     jobs:
     - template: pipeline/jobs/terraform-apply.yaml
       parameters:
@@ -113,7 +113,7 @@ stages:
     dependsOn: PlanDev
     condition: and(succeeded(), or(eq('${{ parameters.stage }}', 'DEV'), contains('${{ parameters.stage }}', 'NONPROD'), contains('${{ parameters.stage }}', 'ALL')))
     variables:
-      - group: PIH-APIM-BUILD-DEV
+      - group: PIP-APIM-BUILD-DEV
     jobs:
     - template: pipeline/jobs/terraform-apply.yaml
       parameters:
@@ -131,7 +131,7 @@ stages:
     dependsOn: PlanTest
     condition: and(succeeded(), or(eq('${{ parameters.stage }}', 'TEST'), contains('${{ parameters.stage }}', 'NONPROD'), contains('${{ parameters.stage }}', 'ALL')))
     variables:
-      - group: PIH-APIM-BUILD-TEST
+      - group: PIP-APIM-BUILD-TEST
     jobs:
     - template: pipeline/jobs/terraform-apply.yaml
       parameters:
@@ -151,7 +151,7 @@ stages:
     pool:
       vmImage: 'ubuntu-18.04'
     variables:
-      - group: PIH-APIM-BUILD-SBOX
+      - group: PIP-APIM-BUILD-SBOX
     jobs:
       - template: pipeline/jobs/create-storage.yaml
         parameters:
@@ -174,7 +174,7 @@ stages:
           storageContainer: $(storageContainer)
           variables:
             storageContainer: $[dependencies.CreateStorage.outputs['createContainer.container']]
-            subscriptionKey: $[dependencies.ExportKeyVault.outputs['exportKeyVaultSecret.pih-apim-sub-key']]
+            subscriptionKey: $[dependencies.ExportKeyVault.outputs['exportKeyVaultSecret.pip-apim-sub-key']]
 
       - template: pipeline/jobs/test-acceptance.yaml
         parameters:
@@ -187,7 +187,7 @@ stages:
           storageContainer: $(storageContainer)
           variables:
             storageContainer: $[dependencies.CreateStorage.outputs['createContainer.container']]
-            subscriptionKey: $[dependencies.ExportKeyVault.outputs['exportKeyVaultSecret.pih-apim-sub-key']]
+            subscriptionKey: $[dependencies.ExportKeyVault.outputs['exportKeyVaultSecret.pip-apim-sub-key']]
 
       - template: pipeline/jobs/test-codequality.yaml
         parameters:
@@ -202,7 +202,7 @@ stages:
     pool:
       vmImage: 'ubuntu-18.04'
     variables:
-      - group: PIH-APIM-BUILD-DEV
+      - group: PIP-APIM-BUILD-DEV
     jobs:
       - template: pipeline/jobs/create-storage.yaml
         parameters:
@@ -225,7 +225,7 @@ stages:
           storageContainer: $(storageContainer)
           variables:
             storageContainer: $[dependencies.CreateStorage.outputs['createContainer.container']]
-            subscriptionKey: $[dependencies.ExportKeyVault.outputs['exportKeyVaultSecret.pih-apim-sub-key']]
+            subscriptionKey: $[dependencies.ExportKeyVault.outputs['exportKeyVaultSecret.pip-apim-sub-key']]
 
       - template: pipeline/jobs/test-acceptance.yaml
         parameters:
@@ -238,7 +238,7 @@ stages:
           storageContainer: $(storageContainer)
           variables:
             storageContainer: $[dependencies.CreateStorage.outputs['createContainer.container']]
-            subscriptionKey: $[dependencies.ExportKeyVault.outputs['exportKeyVaultSecret.pih-apim-sub-key']]
+            subscriptionKey: $[dependencies.ExportKeyVault.outputs['exportKeyVaultSecret.pip-apim-sub-key']]
 
 
   - stage: TestTEST
@@ -247,7 +247,7 @@ stages:
     pool:
       vmImage: 'ubuntu-18.04'
     variables:
-      - group: PIH-APIM-BUILD-TEST
+      - group: PIP-APIM-BUILD-TEST
     jobs:
       - template: pipeline/jobs/create-storage.yaml
         parameters:
@@ -270,7 +270,7 @@ stages:
           storageContainer: $(storageContainer)
           variables:
             storageContainer: $[dependencies.CreateStorage.outputs['createContainer.container']]
-            subscriptionKey: $[dependencies.ExportKeyVault.outputs['exportKeyVaultSecret.pih-apim-sub-key']]
+            subscriptionKey: $[dependencies.ExportKeyVault.outputs['exportKeyVaultSecret.pip-apim-sub-key']]
 
       - template: pipeline/jobs/test-acceptance.yaml
         parameters:
@@ -283,7 +283,7 @@ stages:
           storageContainer: $(storageContainer)
           variables:
             storageContainer: $[dependencies.CreateStorage.outputs['createContainer.container']]
-            subscriptionKey: $[dependencies.ExportKeyVault.outputs['exportKeyVaultSecret.pih-apim-sub-key']]
+            subscriptionKey: $[dependencies.ExportKeyVault.outputs['exportKeyVaultSecret.pip-apim-sub-key']]
 
       - template: pipeline/jobs/test-smoke.yaml
         parameters:
@@ -296,7 +296,7 @@ stages:
           storageContainer: $(storageContainer)
           variables:
             storageContainer: $[dependencies.CreateStorage.outputs['createContainer.container']]
-            subscriptionKey: $[dependencies.ExportKeyVault.outputs['exportKeyVaultSecret.pih-apim-sub-key']]
+            subscriptionKey: $[dependencies.ExportKeyVault.outputs['exportKeyVaultSecret.pip-apim-sub-key']]
 
       - template: pipeline/jobs/test-functional.yaml
         parameters:
@@ -309,7 +309,7 @@ stages:
           storageContainer: $(storageContainer)
           variables:
             storageContainer: $[dependencies.CreateStorage.outputs['createContainer.container']]
-            subscriptionKey: $[dependencies.ExportKeyVault.outputs['exportKeyVaultSecret.pih-apim-sub-key']]
+            subscriptionKey: $[dependencies.ExportKeyVault.outputs['exportKeyVaultSecret.pip-apim-sub-key']]
 
       - template: pipeline/jobs/test-codequality.yaml
         parameters:

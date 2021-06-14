@@ -1,7 +1,7 @@
-resource "azurerm_api_management_api" "pih_apim_api" {
+resource "azurerm_api_management_api" "pip_apim_api" {
   name                = "${var.prefix}-${var.product}-api"
-  resource_group_name = azurerm_resource_group.pih_apim_rg.name
-  api_management_name = azurerm_api_management.pih_apim.name
+  resource_group_name = azurerm_resource_group.pip_apim_rg.name
+  api_management_name = azurerm_api_management.pip_apim.name
   revision            = var.revision
   display_name        = "${var.prefix}-${var.product}-api"
   path                = var.prefix
@@ -17,10 +17,10 @@ resource "azurerm_api_management_api" "pih_apim_api" {
   }
 }
 
-resource "azurerm_api_management_api" "pih_apim_api_health" {
+resource "azurerm_api_management_api" "pip_apim_api_health" {
   name                  = "${var.prefix}-${var.product}-api-health"
-  resource_group_name   = azurerm_resource_group.pih_apim_rg.name
-  api_management_name   = azurerm_api_management.pih_apim.name
+  resource_group_name   = azurerm_resource_group.pip_apim_rg.name
+  api_management_name   = azurerm_api_management.pip_apim.name
   revision              = var.revision
   display_name          = "${var.prefix}-${var.product}-api-health"
   path                  = "health"

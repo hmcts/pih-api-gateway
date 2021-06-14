@@ -22,9 +22,9 @@ jobs:
         displayName: 'Export Secrets from KeyVault'
         inputs:
           azureSubscription: ${{ parameters.subscription }}
-          keyVaultName: pih-shared-kv-$(environment)
-          secretsFilter: 'pih-apim-sub-key'
+          keyVaultName: pip-shared-kv-$(environment)
+          secretsFilter: 'pip-apim-sub-key'
       - script: |
-          echo "##vso[task.setvariable variable=pih-apim-sub-key;isOutput=true;isSecret=true]$(pih-apim-sub-key)"
+          echo "##vso[task.setvariable variable=pip-apim-sub-key;isOutput=true;isSecret=true]$(pip-apim-sub-key)"
         displayName: 'Export KeyVault Variables'
         name: exportKeyVaultSecret

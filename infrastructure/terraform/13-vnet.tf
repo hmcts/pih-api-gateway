@@ -1,6 +1,6 @@
 data "azurerm_virtual_network" "pip_apim_vnet" {
   name                = "pip-sharedinfra-vnet-${var.environment}"
-  resource_group_name = "pip-sharedinfra-${var.environment}-rg"
+  resource_group_name = "pipshared${var.environment}rg"
 }
 
 data "azurerm_subnet" "pip_apim_subnet" {

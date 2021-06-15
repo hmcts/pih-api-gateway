@@ -1,0 +1,14 @@
+[
+  {
+    "allowedMemberTypes": [
+      "Application"
+    ],
+    "description": "Apps that have this role can invoke PIP",
+    "displayName": "PIP - Access to the Gateway",
+    "id": "fc803414-3c61-4ebc-a5e5-cd1675c14bbe",
+    "isEnabled": true,
+    "lang": null,
+    "origin": "Application",
+    "value": "pipGateway"
+  }
+]

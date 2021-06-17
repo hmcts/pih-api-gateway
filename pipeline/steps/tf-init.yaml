@@ -14,5 +14,5 @@ steps:
       backendAzureRmResourceGroupName: $(devopsResourceGroup)
       backendAzureRmResourceGroupLocation: $(location)
       backendAzureRmStorageAccountName: $(devopsStorageAccount)
-      backendAzureRmContainerName: $(prefix)$(product)terraform
-      backendAzureRmKey: $(prefix)$(product).tfstate
+      backendAzureRmContainerName: $(prefix)$(tf_product)terraform
+      backendAzureRmKey: $(prefix)$(tf_product).tfstate

@@ -12,9 +12,9 @@ $userAccessScopeApi = '{
         "id": "--- replaced in scripts ---",
         "isEnabled": true,
         "type": "User",
-        "userConsentDescription": "Allow access to PIP Gateway access_as_user",
+        "userConsentDescription": "Allow access to PIP Gateway",
         "userConsentDisplayName": "Allow access to PIP Gateway",
-        "value": "access_as_user"
+        "value": "pip_api_write"
 }' | ConvertTo-Json | ConvertFrom-Json
  
 ##################################
@@ -63,11 +63,10 @@ Write-Host " - Roles added to App Registration: $myApiAppRegistrationResultAppId
  
 # 1. read oauth2Permissions
 $oauth2PermissionsApi = $myApiAppRegistrationResult.oauth2Permissions
- 
 # 2. set to enabled to false from the defualt scope, because we want to remove this
 $oauth2PermissionsApi[0].isEnabled = 'false'
 $oauth2PermissionsApi = ConvertTo-Json -InputObject @($oauth2PermissionsApi) 
-Write-Host "$oauth2PermissionsApi" 
+Write-Host "$oauth2PermissionsApi"
 
 # disable oauth2Permission in Azure App Registration
 $oauth2PermissionsApi | Out-File -FilePath .\oauth2Permissionsold.json
@@ -75,17 +74,20 @@ az ad app update --id $myApiAppRegistrationResultAppId --set oauth2Permissions=`
  
 # 3. delete the default oauth2Permission
 az ad app update --id $myApiAppRegistrationResultAppId --set oauth2Permissions='[]'
- 
-# 4. add the new scope required add the new oauth2Permissions values
-$oauth2PermissionsApiNew += (ConvertFrom-Json -InputObject $userAccessScopeApi)
-$oauth2PermissionsApiNew[0].id = "63029e0b-2e4f-40e4-9424-ba2fb85403a6"
-$oauth2PermissionsApiNew = ConvertTo-Json -InputObject @($oauth2PermissionsApiNew) 
-Write-Host "$oauth2PermissionsApiNew" 
-$oauth2PermissionsApiNew | Out-File -FilePath .\oauth2Permissionsnew.json
-az ad app update --id $myApiAppRegistrationResultAppId --set oauth2Permissions=`@oauth2Permissionsnew.json
-Write-Host " - Updated scopes (oauth2Permissions) for App Registration: $myApiAppRegistrationResultAppId"
+$newIdentifier = New-Guid
+Write-Host "New ID to be used: $newIdentifier"
 
-az ad app permission add --id $myApiAppRegistrationResultAppId --api $myApiAppRegistrationResultAppId --api-permission fc803414-3c61-4ebc-a5e5-cd1675c14bbd=Role
+# 4. add the new scope required add the new oauth2Permissions values
+$oauth2PermissionsApiNew = $userAccessScopeApi | ConvertFrom-Json
+$oauth2PermissionsApiNew[0].id = $newIdentifier
+$oauth2PermissionsApiNew = ConvertTo-Json -InputObject @($oauth2PermissionsApiNew) 
+# Write-Host "new oauth2permissions : " + $oauth2PermissionsApiNew" 
+$oauth2PermissionsApiNew | Out-File -FilePath .\oauth2Permissionsnew.json
+az ad app update --id $myApiAppRegistrationResultAppId --set oauth2Permissions=@oauth2Permissionsnew.json
+
+Write-Host " - Updated scopes (oauth2Permissions) for App Registration: $app$myApiAppRegistrationResultAppId"`
+
+#az ad app permission add --id $myApiAppRegistrationResultAppId --api $myApiAppRegistrationResultAppId --api-permission fc803414-3c61-4ebc-a5e5-cd1675c14bbd=Role
 
 ##################################
 ###  Create a ServicePrincipal for the API App Registration

@@ -56,7 +56,7 @@ Write-Host " - Created API $displayNameApi with myApiAppRegistrationResultAppId:
 
 az ad app update --id $myApiAppRegistrationResultAppId --app-roles @pip-gateway-role.json
 Write-Host " - Roles added to App Registration: $myApiAppRegistrationResultAppId"
- 
+
 ##################################
 ###  Add scopes (oauth2Permissions)
 ##################################
@@ -74,20 +74,16 @@ az ad app update --id $myApiAppRegistrationResultAppId --set oauth2Permissions=`
  
 # 3. delete the default oauth2Permission
 az ad app update --id $myApiAppRegistrationResultAppId --set oauth2Permissions='[]'
-$newIdentifier = New-Guid
-Write-Host "New ID to be used: $newIdentifier"
 
 # 4. add the new scope required add the new oauth2Permissions values
+$newIdentifier = New-Guid
 $oauth2PermissionsApiNew = $userAccessScopeApi | ConvertFrom-Json
 $oauth2PermissionsApiNew[0].id = $newIdentifier
 $oauth2PermissionsApiNew = ConvertTo-Json -InputObject @($oauth2PermissionsApiNew) 
-# Write-Host "new oauth2permissions : " + $oauth2PermissionsApiNew" 
 $oauth2PermissionsApiNew | Out-File -FilePath .\oauth2Permissionsnew.json
 az ad app update --id $myApiAppRegistrationResultAppId --set oauth2Permissions=@oauth2Permissionsnew.json
 
 Write-Host " - Updated scopes (oauth2Permissions) for App Registration: $app$myApiAppRegistrationResultAppId"`
-
-#az ad app permission add --id $myApiAppRegistrationResultAppId --api $myApiAppRegistrationResultAppId --api-permission fc803414-3c61-4ebc-a5e5-cd1675c14bbd=Role
 
 ##################################
 ###  Create a ServicePrincipal for the API App Registration

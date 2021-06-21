@@ -100,7 +100,7 @@ stages:
         displayName: Plan DEV
         subscription: DTS-SHAREDSERVICES-DEV
         group: PIP-APIM-BUILD-DEV
-        environment: test
+        environment: "dev"
     #- ${{ each environment in parameters.environments }}:  
     #  - template: pipeline/jobs/remove-fw.yaml
     #    parameters:
@@ -126,7 +126,7 @@ stages:
         displayName: Plan TEST
         subscription: DTS-SHAREDSERVICES-TEST
         group: PIP-APIM-BUILD-TEST
-        environment: test 
+        environment: "test" 
     #- ${{ each environment in parameters.environments }}:  
     #  - template: pipeline/jobs/remove-fw.yaml
     #    parameters:

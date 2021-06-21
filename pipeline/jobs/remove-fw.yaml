@@ -13,7 +13,7 @@ parameters:
     type: string
 
 jobs:
-  - job: RemoveFirewallRule
+  - job: RemoveFirewallRule_${{ parameters.environemnt }}
     dependsOn:
       - ${{ if parameters.dependsOn }}:
           - ${{ parameters.dependsOn }}

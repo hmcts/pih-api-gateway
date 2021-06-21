@@ -124,6 +124,7 @@ stages:
         displayName: Plan TEST
         subscription: DTS-SHAREDSERVICES-TEST
         group: PIP-APIM-BUILD-TEST
+        environment: test 
     #- ${{ each environment in parameters.environments }}:  
     #  - template: pipeline/jobs/remove-fw.yaml
     #    parameters:

@@ -47,7 +47,7 @@ stages:
     jobs:
     - ${{ each environment in parameters.environments }}:  
       - template: pipeline/jobs/apply-FW.yaml
-       parameters:
+        parameters:
          displayName: Add Firewall Exception
          subscription: ${{ environment.subscription }}
          group: ${{ environment.group }}
@@ -331,14 +331,15 @@ stages:
           dependsOn:
           - AcceptanceTest
   
+
   - stage: AzureCLI@2
-      displayName: Remove FW Exception
-      inputs:
-      azureSubscription: ${{ parameters.subscription }}
-      scriptType: pscore
-      scriptLocation: inlineScript
-      inlineScript: |
-        $ErrorActionPreference = "Continue"
-        export ip=$(curl "http://ifconfig.me/ip")
-        az storage account network-rule remove --account-name pipshared${{ parameter.environment }}sa -g pipshared${{ parameter.environment }}rg --ip-address $ipx
-  
+    displayName: Remove FW Exception
+    jobs:
+    - ${{ each environment in parameters.environments }}:  
+      - template: pipeline/jobs/remove-fw.yaml
+       parameters:
+         displayName: Remove Firewall Exception
+         subscription: ${{ environment.subscription }}
+         group: ${{ environment.group }}
+         environment: ${{ environment.name }}
+        

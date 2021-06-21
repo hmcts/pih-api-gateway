@@ -13,8 +13,7 @@ parameters:
     type: string
 
 jobs:
-  - bash: curl "http://ifconfig.me/ip"
-    displayName: IPAddress
+
   - job: AddFirewallRule${{ parameters.environment }}
     dependsOn:
       - ${{ if parameters.dependsOn }}:
@@ -31,5 +30,6 @@ jobs:
           scriptLocation: inlineScript
           inlineScript: |
             export ip=$(curl "http://ifconfig.me/ip")
+            echo $ip
             az storage account network-rule add --account-name pipshared${{ parameters.environment }}sa -g pipshared${{ parameters.environment }}rg --ip-address $ip
   

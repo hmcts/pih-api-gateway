@@ -48,10 +48,10 @@ stages:
     - ${{ each environment in parameters.environments }}:  
       - template: pipeline/jobs/apply-FW.yaml
         parameters:
-         displayName: Add Firewall Exception
-         subscription: ${{ environment.subscription }}
-         group: ${{ environment.group }}
-         environment: ${{ environment.name }}
+          displayName: Add Firewall Exception
+          subscription: ${{ environment.subscription }}
+          group: ${{ environment.group }}
+          environment: ${{ environment.name }}
 
 
 

@@ -5,6 +5,10 @@ parameters:
   - name: group
     type: string
 
+  - name: dependsOn
+    type: object
+    default: ''
+    
   - name: displayName
     type: string
 

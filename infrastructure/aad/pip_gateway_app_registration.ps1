@@ -50,7 +50,7 @@ $identifierUrlApi = "api://" + $myApiAppRegistrationResultAppId
 az ad app update --id $myApiAppRegistrationResultAppId --identifier-uris $identifierUrlApi
 Write-Host " - Created API $displayNameApi with myApiAppRegistrationResultAppId: $myApiAppRegistrationResultAppId"
 
-$keyVaultName = "beotech-apim-kv-dev"
+$keyVaultName = "pip-shared-kv-sbox"
 az keyvault secret set --vault-name $keyVaultName --name "$displayNameApi-scope" --value $identifierUrlApi
 
 ##################################

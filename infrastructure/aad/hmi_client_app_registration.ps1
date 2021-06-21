@@ -44,7 +44,7 @@ Write-Host "Begin PIP Client Azure App Registration"
 ### Create Azure App Registration
 ##################################
 
-$keyVaultName = "beotech-apim-kv-dev"
+$keyVaultName = "pip-shared-kv-sbox"
 
 $myApiAppRegistration = az ad app create `
     --display-name $displayNameApi `

@@ -76,6 +76,7 @@ stages:
         displayName: Plan SBOX
         subscription: DTS-SHAREDSERVICES-SBOX
         group: PIP-APIM-BUILD-SBOX
+        environment: sbox
     - ${{ each environment in parameters.environments }}:  
       - template: pipeline/jobs/remove-fw.yaml
         parameters:

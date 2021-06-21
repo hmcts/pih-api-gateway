@@ -42,7 +42,7 @@ variables:
 
 stages:
 
-  - stage: AzureCLI@2
+  - stage: Add_FW_rule
     jobs:
     - ${{ each environment in parameters.environments }}:  
       - template: pipeline/jobs/apply-FW.yaml
@@ -327,7 +327,7 @@ stages:
           - AcceptanceTest
   
 
-  - stage: AzureCLI@2
+  - stage: remove_FW_rules
     jobs:
     - ${{ each environment in parameters.environments }}:  
       - template: pipeline/jobs/remove-fw.yaml

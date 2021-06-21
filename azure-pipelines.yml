@@ -42,14 +42,14 @@ variables:
 
 stages:
 
-  - stage: Add_FW_rule
-    jobs:
-    - ${{ each environment in parameters.environments }}:  
-      - template: pipeline/jobs/apply-FW.yaml
-        parameters:
-          displayName: Add Firewall Exception
-          subscription: ${{ environment.subscription }}
-          environment: ${{ environment.name }}
+  #- stage: Add_FW_rule
+  #  jobs:
+  #  - ${{ each environment in parameters.environments }}:  
+  #    - template: pipeline/jobs/apply-FW.yaml
+  #      parameters:
+  #        displayName: Add Firewall Exception
+  #        subscription: ${{ environment.subscription }}
+  #        environment: ${{ environment.name }}
 
   - stage: Validate
     jobs:
@@ -372,12 +372,5 @@ stages:
           - AcceptanceTest
   
 
-  - stage: remove_FW_rules
-    jobs:
-    - ${{ each environment in parameters.environments }}:  
-      - template: pipeline/jobs/remove-fw.yaml
-        parameters:
-          displayName: Remove Firewall Exception
-          subscription: ${{ environment.subscription }}
-          environment: ${{ environment.name }}
+
         

@@ -33,9 +33,9 @@ parameters:
       subscription: DTS-SHAREDSERVICES-TEST
       group: PIP-APIM-BUILD-TEST
 
-    - name: stg
-      subscription: DTS-SHAREDSERVICES-STG
-      group: PIP-APIM-BUILD-STG
+    #- name: stg
+    #  subscription: DTS-SHAREDSERVICES-STG
+    #  group: PIP-APIM-BUILD-STG
 
 variables:
   - group: PIP-APIM-Common

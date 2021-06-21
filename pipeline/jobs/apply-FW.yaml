@@ -10,7 +10,7 @@ parameters:
     type: string
 
 jobs:
-  - job: CreateStorage
+  - job: AddFirewallRule
     dependsOn:
       - ${{ if parameters.dependsOn }}:
           - ${{ parameters.dependsOn }}

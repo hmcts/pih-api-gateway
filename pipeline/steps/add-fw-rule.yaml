@@ -26,5 +26,4 @@ steps:
         export ip=$(curl "http://ifconfig.me/ip")
         echo "our IP is $ip"
         az storage account network-rule add --account-name pipshared${{ parameters.environment }}sa -g pipshared${{ parameters.environment }}rg --ip-address $ip
-        sleep 40
         az storage account network-rule list --account-name pipshared${{ parameters.environment }}sa -g pipshared${{ parameters.environment }}rg

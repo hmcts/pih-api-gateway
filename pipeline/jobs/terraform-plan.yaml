@@ -27,11 +27,11 @@ jobs:
     pool:
       vmImage: 'ubuntu-18.04'
     steps:
-      - template: ../steps/add-fw-rule.yaml
-        parameters:
-          displayName: Add Firewall Exception
-          subscription: ${{ parameters.subscription }}
-          environment: ${{ parameters.environment }}
+      #- template: ../steps/add-fw-rule.yaml
+      #  parameters:
+      #    displayName: Add Firewall Exception
+      #    subscription: ${{ parameters.subscription }}
+      #    environment: ${{ parameters.environment }}
       - template: ../steps/tf-install.yaml
       - template: ../steps/tf-init.yaml
         parameters:

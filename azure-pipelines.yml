@@ -65,6 +65,12 @@ stages:
     dependsOn: Validate
     condition: and(succeeded(), or(eq('${{ parameters.stage }}', 'SBOX'), contains('${{ parameters.stage }}', 'NONPROD'), contains('${{ parameters.stage }}', 'ALL')))
     jobs:
+    - ${{ each environment in parameters.environments }}:  
+      - template: pipeline/jobs/apply-FW.yaml
+        parameters:
+          displayName: Add Firewall Exception
+          subscription: ${{ environment.subscription }}
+          environment: ${{ environment.name }}
     - template: pipeline/jobs/terraform-plan.yaml
       parameters:
         displayName: Plan SBOX
@@ -75,6 +81,12 @@ stages:
     dependsOn: Validate
     condition: and(succeeded(), or(eq('${{ parameters.stage }}', 'DEV'), contains('${{ parameters.stage }}', 'NONPROD'), contains('${{ parameters.stage }}', 'ALL')))
     jobs:
+    - ${{ each environment in parameters.environments }}:  
+      - template: pipeline/jobs/apply-FW.yaml
+        parameters:
+          displayName: Add Firewall Exception
+          subscription: ${{ environment.subscription }}
+          environment: ${{ environment.name }}
     - template: pipeline/jobs/terraform-plan.yaml
       parameters:
         displayName: Plan DEV
@@ -85,6 +97,12 @@ stages:
     dependsOn: Validate
     condition: and(succeeded(), or(eq('${{ parameters.stage }}', 'TEST'), contains('${{ parameters.stage }}', 'NONPROD'), contains('${{ parameters.stage }}', 'ALL')))
     jobs:
+    - ${{ each environment in parameters.environments }}:  
+      - template: pipeline/jobs/apply-FW.yaml
+        parameters:
+          displayName: Add Firewall Exception
+          subscription: ${{ environment.subscription }}
+          environment: ${{ environment.name }}
     - template: pipeline/jobs/terraform-plan.yaml
       parameters:
         displayName: Plan TEST

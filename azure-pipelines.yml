@@ -76,6 +76,13 @@ stages:
         displayName: Plan SBOX
         subscription: DTS-SHAREDSERVICES-SBOX
         group: PIP-APIM-BUILD-SBOX
+    - ${{ each environment in parameters.environments }}:  
+      - template: pipeline/jobs/remove-fw.yaml
+        parameters:
+          displayName: Remove Firewall Exception
+          subscription: ${{ environment.subscription }}
+          environment: ${{ environment.name }}
+        
 
   - stage: PlanDEV
     dependsOn: Validate
@@ -92,6 +99,13 @@ stages:
         displayName: Plan DEV
         subscription: DTS-SHAREDSERVICES-DEV
         group: PIP-APIM-BUILD-DEV
+    - ${{ each environment in parameters.environments }}:  
+      - template: pipeline/jobs/remove-fw.yaml
+        parameters:
+          displayName: Remove Firewall Exception
+          subscription: ${{ environment.subscription }}
+          environment: ${{ environment.name }}
+        
 
   - stage: PlanTEST
     dependsOn: Validate
@@ -108,6 +122,13 @@ stages:
         displayName: Plan TEST
         subscription: DTS-SHAREDSERVICES-TEST
         group: PIP-APIM-BUILD-TEST
+    - ${{ each environment in parameters.environments }}:  
+      - template: pipeline/jobs/remove-fw.yaml
+        parameters:
+          displayName: Remove Firewall Exception
+          subscription: ${{ environment.subscription }}
+          environment: ${{ environment.name }}
+        
 
   - stage: PlanSTG
     dependsOn: Validate

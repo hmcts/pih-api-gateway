@@ -1,7 +1,7 @@
 [
   {
     "allowedMemberTypes": [
-      "User"
+      "Application"
     ],
     "description": "Apps that have this role can invoke PIP",
     "displayName": "PIP - Access to the Gateway",

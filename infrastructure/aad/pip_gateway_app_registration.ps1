@@ -49,7 +49,10 @@ $myApiAppRegistrationResultAppId = $myApiAppRegistrationResult.appId
 $identifierUrlApi = "api://" + $myApiAppRegistrationResultAppId
 az ad app update --id $myApiAppRegistrationResultAppId --identifier-uris $identifierUrlApi
 Write-Host " - Created API $displayNameApi with myApiAppRegistrationResultAppId: $myApiAppRegistrationResultAppId"
- 
+
+$keyVaultName = "beotech-apim-kv-dev"
+az keyvault secret set --vault-name $keyVaultName --name "$displayNameApi-scope" --value $identifierUrlApi
+
 ##################################
 ### Add Roles to App Registration 
 ##################################
@@ -77,12 +80,12 @@ az ad app update --id $myApiAppRegistrationResultAppId --set oauth2Permissions='
 
 # 4. add the new scope required add the new oauth2Permissions values
 $newIdentifier = New-Guid
+Write-Host "New permission id: $newIdentifier"
 $oauth2PermissionsApiNew = $userAccessScopeApi | ConvertFrom-Json
 $oauth2PermissionsApiNew[0].id = $newIdentifier
 $oauth2PermissionsApiNew = ConvertTo-Json -InputObject @($oauth2PermissionsApiNew) 
 $oauth2PermissionsApiNew | Out-File -FilePath .\oauth2Permissionsnew.json
 az ad app update --id $myApiAppRegistrationResultAppId --set oauth2Permissions=@oauth2Permissionsnew.json
-
 Write-Host " - Updated scopes (oauth2Permissions) for App Registration: $app$myApiAppRegistrationResultAppId"`
 
 ##################################

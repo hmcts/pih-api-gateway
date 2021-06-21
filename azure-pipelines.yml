@@ -43,7 +43,6 @@ variables:
 stages:
 
   - stage: AzureCLI@2
-    displayName: Add FW Exception
     jobs:
     - ${{ each environment in parameters.environments }}:  
       - template: pipeline/jobs/apply-FW.yaml
@@ -328,8 +327,7 @@ stages:
           - AcceptanceTest
   
 
-  - stage: Remove
-    displayName: Remove FW Exception
+  - stage: AzureCLI@2
     jobs:
     - ${{ each environment in parameters.environments }}:  
       - template: pipeline/jobs/remove-fw.yaml

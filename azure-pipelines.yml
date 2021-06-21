@@ -337,9 +337,9 @@ stages:
     jobs:
     - ${{ each environment in parameters.environments }}:  
       - template: pipeline/jobs/remove-fw.yaml
-       parameters:
-         displayName: Remove Firewall Exception
-         subscription: ${{ environment.subscription }}
-         group: ${{ environment.group }}
-         environment: ${{ environment.name }}
+        parameters:
+          displayName: Remove Firewall Exception
+          subscription: ${{ environment.subscription }}
+          group: ${{ environment.group }}
+          environment: ${{ environment.name }}
         

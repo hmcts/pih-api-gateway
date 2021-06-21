@@ -328,7 +328,7 @@ stages:
           - AcceptanceTest
   
 
-  - stage: AzureCLI@2
+  - stage: Remove
     displayName: Remove FW Exception
     jobs:
     - ${{ each environment in parameters.environments }}:  

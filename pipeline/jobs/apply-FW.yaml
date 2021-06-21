@@ -9,6 +9,9 @@ parameters:
   - name: subscription
     type: string
 
+  - name: environment
+    type: string
+
 jobs:
   - job: AddFirewallRule
     dependsOn:
@@ -20,7 +23,7 @@ jobs:
     steps:
       - task: AzureCLI@2
         displayName: add FW rule
-        name: addFWrule-${{ parameters.subscription }}
+        name: addFWrule_${{ parameters.environment }}
         inputs:
           azureSubscription: ${{ parameters.subscription }}
           scriptType: bash

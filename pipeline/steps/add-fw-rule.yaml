@@ -15,9 +15,6 @@ parameters:
 
 steps:
   - task: AzureCLI@2 #AddFirewallRule${{ parameters.environment }}
-    dependsOn:
-      - ${{ if parameters.dependsOn }}:
-          - ${{ parameters.dependsOn }}
     displayName: ${{ parameters.displayName }}
       inputs:
         azureSubscription: ${{ parameters.subscription }}

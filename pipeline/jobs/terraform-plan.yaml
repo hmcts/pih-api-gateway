@@ -13,10 +13,6 @@ parameters:
     type: string
 
 jobs:
-  - job: Logger
-    displayName: Logger
-    steps:
-      - bash: curl "http://ifconfig.me/ip"
 
   - job: TerraformPlan
     dependsOn:

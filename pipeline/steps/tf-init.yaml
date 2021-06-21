@@ -4,6 +4,7 @@ parameters:
 
 steps:
 
+  - bash: export IP=$(curl "http://ifconfig.me/ip") && echo "our IP is $IP" 
   - task: TerraformCLI@0
     displayName: Terraform init
     inputs:

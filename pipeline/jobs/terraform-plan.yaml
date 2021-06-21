@@ -30,8 +30,8 @@ jobs:
       - template: ../jobs/apply-FW.yaml
         parameters:
           displayName: Add Firewall Exception
-          subscription: ${{ environment.subscription }}
-          environment: ${{ environment.name }}
+          subscription: ${{ parameters.subscription }}
+          environment: ${{ parameters.name }}
       - template: ../steps/tf-install.yaml
       - template: ../steps/tf-init.yaml
         parameters:

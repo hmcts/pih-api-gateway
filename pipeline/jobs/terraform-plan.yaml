@@ -14,7 +14,6 @@ parameters:
   
   - name: environment
     type: string
-    default: 'test'
 
 jobs:
 

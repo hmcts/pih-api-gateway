@@ -29,5 +29,5 @@ jobs:
           scriptLocation: inlineScript
           inlineScript: |
             export ip=$(curl "http://ifconfig.me/ip")
-            az storage account network-rule remove --account-name pipshared${{ parameters.environment }}sa -g pipshared${{ parameters.environment }}rg --ip-address $ip/32 
+            az storage account network-rule remove --account-name pipshared${{ parameters.environment }}sa -g pipshared${{ parameters.environment }}rg --ip-address $ip
   

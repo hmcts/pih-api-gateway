@@ -8,12 +8,6 @@ parameters:
 
   - name: subscription
     type: string
-    
-  - name: group
-    type: string
-
-  - name: environment
-    type: string
 
 jobs:
   - job: CreateStorage

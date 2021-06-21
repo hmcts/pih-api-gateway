@@ -50,10 +50,6 @@ stages:
         parameters:
           displayName: Add Firewall Exception
           subscription: ${{ environment.subscription }}
-          group: ${{ environment.group }}
-          environment: ${{ environment.name }}
-
-
 
   - stage: Validate
     jobs:
@@ -340,6 +336,4 @@ stages:
         parameters:
           displayName: Remove Firewall Exception
           subscription: ${{ environment.subscription }}
-          group: ${{ environment.group }}
-          environment: ${{ environment.name }}
         

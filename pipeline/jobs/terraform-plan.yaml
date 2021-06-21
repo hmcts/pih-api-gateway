@@ -10,6 +10,9 @@ parameters:
 
 jobs:
   - job: TerraformPlan
+    dependsOn:
+      - ${{ if parameters.dependsOn }}:
+          - ${{ parameters.dependsOn }}
     variables:
       - group: ${{ parameters.group }}
     displayName: ${{ parameters.displayName }}

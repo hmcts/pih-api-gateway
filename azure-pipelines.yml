@@ -95,6 +95,7 @@ stages:
           subscription: ${{ environment.subscription }}
           environment: ${{ environment.name }}
     - template: pipeline/jobs/terraform-plan.yaml
+      dependsOn:
       parameters:
         displayName: Plan DEV
         subscription: DTS-SHAREDSERVICES-DEV
@@ -118,6 +119,8 @@ stages:
           subscription: ${{ environment.subscription }}
           environment: ${{ environment.name }}
     - template: pipeline/jobs/terraform-plan.yaml
+      dependsOn:
+          - AddFirewallRule${{ parameters.environment }}
       parameters:
         displayName: Plan TEST
         subscription: DTS-SHAREDSERVICES-TEST

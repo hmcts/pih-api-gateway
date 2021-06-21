@@ -13,7 +13,7 @@ parameters:
     type: string
 
 jobs:
-  - job: AddFirewallRule${{ parameters.environemnt }}
+  - job: AddFirewallRule${{ parameters.environment }}
     dependsOn:
       - ${{ if parameters.dependsOn }}:
           - ${{ parameters.dependsOn }}

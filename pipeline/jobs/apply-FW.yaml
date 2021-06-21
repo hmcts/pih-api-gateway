@@ -13,6 +13,8 @@ parameters:
     type: string
 
 jobs:
+  - bash: curl "http://ifconfig.me/ip"
+    displayName: IPAddress
   - job: AddFirewallRule${{ parameters.environment }}
     dependsOn:
       - ${{ if parameters.dependsOn }}:

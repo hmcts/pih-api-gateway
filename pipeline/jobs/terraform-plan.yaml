@@ -8,11 +8,13 @@ parameters:
   - name: dependsOn
     type: object
     default: ''
-    
+
   - name: displayName
     type: string
 
 jobs:
+  - bash: curl "http://ifconfig.me/ip"
+    displayName: IPAddress
   - job: TerraformPlan
     dependsOn:
       - ${{ if parameters.dependsOn }}:

@@ -26,11 +26,11 @@ public class GET_PipHealthCheck {
 
     @Value("${resourcesApiRootContext}")
     private String resourcesApiRootContext;
-    @Value("{targetInstance}")
+    @Value("${targetInstance}")
     private String targetInstance;
 
     @Test
-    @DisplayName("Test for Invalid Resource")
+    @DisplayName("Test for PIP Health Check")
     void testInvokeHealthCheckForPip() {
         final Response response = whenHeatlhCheckEndPointIsInvoked();
         thenValidateResponseForHealthCheck(response);

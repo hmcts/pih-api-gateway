@@ -20,7 +20,7 @@ jobs:
     steps:
       - task: AzureCLI@2
         displayName: add FW rule
-        name: addFWrule
+        name: addFWrule-${{ parameters.subscription }}
         inputs:
           azureSubscription: ${{ parameters.subscription }}
           scriptType: bash

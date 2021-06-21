@@ -95,7 +95,6 @@ stages:
           subscription: ${{ environment.subscription }}
           environment: ${{ environment.name }}
     - template: pipeline/jobs/terraform-plan.yaml
-      dependsOn:
       parameters:
         displayName: Plan DEV
         subscription: DTS-SHAREDSERVICES-DEV

@@ -27,7 +27,7 @@ jobs:
     pool:
       vmImage: 'ubuntu-18.04'
     steps:
-      - template: ../jobs/apply-FW.yaml
+      - template: ../steps/add-fw-rule.yaml
         parameters:
           displayName: Add Firewall Exception
           subscription: ${{ parameters.subscription }}

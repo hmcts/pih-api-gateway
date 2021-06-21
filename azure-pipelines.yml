@@ -41,6 +41,16 @@ variables:
   - group: PIP-APIM-Common
 
 stages:
+
+  - stage: AzureCLI@2
+    displayName: Add FW Exception
+    jobs:
+    - ${{ each environment in parameters.environments }}:  
+      - template: pipeline/jobs/apply-FW.yaml
+        parameters:
+          displayName: Add Firewall Exception
+          subscription: ${{ environment.subscription }}
+
   - stage: Validate
     jobs:
     - ${{ each environment in parameters.environments }}:
@@ -316,4 +326,14 @@ stages:
           displayName: Code Quality Test
           dependsOn:
           - AcceptanceTest
+  
 
+  - stage: AzureCLI@2
+    displayName: Remove FW Exception
+    jobs:
+    - ${{ each environment in parameters.environments }}:  
+      - template: pipeline/jobs/remove-fw.yaml
+        parameters:
+          displayName: Remove Firewall Exception
+          subscription: ${{ environment.subscription }}
+        

@@ -120,7 +120,7 @@ stages:
     - template: pipeline/jobs/terraform-plan.yaml
       parameters:
         dependsOn:
-        - AddFirewallRule${{ parameters.environment }}
+        - AddFirewallRule
         displayName: Plan TEST
         subscription: DTS-SHAREDSERVICES-TEST
         group: PIP-APIM-BUILD-TEST

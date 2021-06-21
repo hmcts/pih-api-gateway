@@ -88,35 +88,35 @@ stages:
     dependsOn: Validate
     condition: and(succeeded(), or(eq('${{ parameters.stage }}', 'DEV'), contains('${{ parameters.stage }}', 'NONPROD'), contains('${{ parameters.stage }}', 'ALL')))
     jobs:
-    - ${{ each environment in parameters.environments }}:  
-      - template: pipeline/jobs/apply-FW.yaml
-        parameters:
-          displayName: Add Firewall Exception
-          subscription: ${{ environment.subscription }}
-          environment: ${{ environment.name }}
+    #- ${{ each environment in parameters.environments }}:  
+    #  - template: pipeline/jobs/apply-FW.yaml
+    #    parameters:
+    #      displayName: Add Firewall Exception
+    #      subscription: ${{ environment.subscription }}
+    #      environment: ${{ environment.name }}
     - template: pipeline/jobs/terraform-plan.yaml
       parameters:
         displayName: Plan DEV
         subscription: DTS-SHAREDSERVICES-DEV
         group: PIP-APIM-BUILD-DEV
-    - ${{ each environment in parameters.environments }}:  
-      - template: pipeline/jobs/remove-fw.yaml
-        parameters:
-          displayName: Remove Firewall Exception
-          subscription: ${{ environment.subscription }}
-          environment: ${{ environment.name }}
+    #- ${{ each environment in parameters.environments }}:  
+    #  - template: pipeline/jobs/remove-fw.yaml
+    #    parameters:
+    #      displayName: Remove Firewall Exception
+    #      subscription: ${{ environment.subscription }}
+    #      environment: ${{ environment.name }}
         
 
   - stage: PlanTEST
     dependsOn: Validate
     condition: and(succeeded(), or(eq('${{ parameters.stage }}', 'TEST'), contains('${{ parameters.stage }}', 'NONPROD'), contains('${{ parameters.stage }}', 'ALL')))
     jobs:
-    - ${{ each environment in parameters.environments }}:  
-      - template: pipeline/jobs/apply-FW.yaml
-        parameters:
-          displayName: Add Firewall Exception
-          subscription: ${{ environment.subscription }}
-          environment: ${{ environment.name }}
+    #- ${{ each environment in parameters.environments }}:  
+    #  - template: pipeline/jobs/apply-FW.yaml
+    #    parameters:
+    #      displayName: Add Firewall Exception
+    #      subscription: ${{ environment.subscription }}
+    #      environment: ${{ environment.name }}
     - template: pipeline/jobs/terraform-plan.yaml
       parameters:
         dependsOn:
@@ -124,12 +124,12 @@ stages:
         displayName: Plan TEST
         subscription: DTS-SHAREDSERVICES-TEST
         group: PIP-APIM-BUILD-TEST
-    - ${{ each environment in parameters.environments }}:  
-      - template: pipeline/jobs/remove-fw.yaml
-        parameters:
-          displayName: Remove Firewall Exception
-          subscription: ${{ environment.subscription }}
-          environment: ${{ environment.name }}
+    #- ${{ each environment in parameters.environments }}:  
+    #  - template: pipeline/jobs/remove-fw.yaml
+    #    parameters:
+    #      displayName: Remove Firewall Exception
+    #      subscription: ${{ environment.subscription }}
+    #      environment: ${{ environment.name }}
         
 
   - stage: PlanSTG

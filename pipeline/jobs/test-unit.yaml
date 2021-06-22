@@ -29,11 +29,6 @@ jobs:
     steps:
       - template: ../steps/download-test-file.yaml
         parameters:
-          fileName: local
-          fileExtension: yaml
-          filePath: /src/test/resources/
-      - template: ../steps/download-test-file.yaml
-        parameters:
           fileName: test
           fileExtension: yaml
           filePath: /src/test/resources/

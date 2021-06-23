@@ -65,24 +65,12 @@ stages:
     dependsOn: Validate
     condition: and(succeeded(), or(eq('${{ parameters.stage }}', 'SBOX'), contains('${{ parameters.stage }}', 'NONPROD'), contains('${{ parameters.stage }}', 'ALL')))
     jobs:
-    - ${{ each environment in parameters.environments }}:  
-      - template: pipeline/jobs/apply-FW.yaml
-        parameters:
-          displayName: Add Firewall Exception
-          subscription: ${{ environment.subscription }}
-          environment: ${{ environment.name }}
     - template: pipeline/jobs/terraform-plan.yaml
       parameters:
         displayName: Plan SBOX
         subscription: DTS-SHAREDSERVICES-SBOX
         group: PIP-APIM-BUILD-SBOX
         environment: sbox
-    - ${{ each environment in parameters.environments }}:  
-      - template: pipeline/jobs/remove-fw.yaml
-        parameters:
-          displayName: Remove Firewall Exception
-          subscription: ${{ environment.subscription }}
-          environment: ${{ environment.name }}
         
 
   - stage: PlanDEV

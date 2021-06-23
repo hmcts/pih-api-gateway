@@ -1,0 +1,33 @@
+parameters:
+  - name: dependsOn
+    type: object
+    default: ''
+
+  - name: displayName
+    type: string
+
+  - name: subscription
+    type: string
+
+  - name: environment
+    type: string
+
+jobs:
+  - job: RemoveFirewallRule${{ parameters.environment }}
+    dependsOn:
+      - ${{ if parameters.dependsOn }}:
+          - ${{ parameters.dependsOn }}
+    displayName: ${{ parameters.displayName }}
+    pool:
+      vmImage: 'windows-latest'
+    steps:
+      - task: AzureCLI@2
+        displayName: add FW rule
+        inputs:
+          azureSubscription: ${{ parameters.subscription }}
+          scriptType: bash
+          scriptLocation: inlineScript
+          inlineScript: |
+            export ip=$(curl "http://ifconfig.me/ip")
+            az storage account network-rule remove --account-name pipshared${{ parameters.environment }}sa -g pipshared${{ parameters.environment }}rg --ip-address $ip
+  

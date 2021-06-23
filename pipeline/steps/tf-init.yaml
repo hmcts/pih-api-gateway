@@ -1,0 +1,20 @@
+parameters:
+  - name: subscription
+    type: string
+
+steps:
+
+  - bash: export IP=$(curl "http://ifconfig.me/ip") && echo "our IP is $IP" 
+    displayName: Current IP
+  - task: TerraformCLI@0
+    displayName: Terraform init
+    inputs:
+      command: init
+      workingDirectory: $(System.DefaultWorkingDirectory)/infrastructure/terraform/
+      backendType: azurerm
+      backendServiceArm: ${{ parameters.subscription }}
+      backendAzureRmResourceGroupName: $(devopsResourceGroup)
+      backendAzureRmResourceGroupLocation: $(location)
+      backendAzureRmStorageAccountName: $(devopsStorageAccount)
+      backendAzureRmContainerName: $(prefix)$(tf_product)terraform
+      backendAzureRmKey: $(prefix)$(tf_product).tfstate

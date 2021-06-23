@@ -1,0 +1,41 @@
+parameters:
+  - name: subscription
+    type: string
+
+  - name: group
+    type: string
+
+  - name: dependsOn
+    type: object
+    default: ''
+
+  - name: displayName
+    type: string
+  
+  - name: environment
+    type: string
+
+jobs:
+
+  - job: TerraformPlan
+    dependsOn:
+      - ${{ if parameters.dependsOn }}:
+          - ${{ parameters.dependsOn }}
+    variables:
+      - group: ${{ parameters.group }}
+    displayName: ${{ parameters.displayName }}
+    pool:
+      vmImage: 'ubuntu-18.04'
+    steps:
+      #- template: ../steps/add-fw-rule.yaml
+      #  parameters:
+      #    displayName: Add Firewall Exception
+      #    subscription: ${{ parameters.subscription }}
+      #    environment: ${{ parameters.environment }}
+      - template: ../steps/tf-install.yaml
+      - template: ../steps/tf-init.yaml
+        parameters:
+          subscription: ${{ parameters.subscription }}
+      - template: ../steps/tf-plan.yaml
+        parameters:
+          subscription: ${{ parameters.subscription }}

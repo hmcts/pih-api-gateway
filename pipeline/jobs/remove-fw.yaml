@@ -9,8 +9,11 @@ parameters:
   - name: subscription
     type: string
 
+  - name: environment
+    type: string
+
 jobs:
-  - job: CreateStorage
+  - job: RemoveFirewallRule${{ parameters.environment }}
     dependsOn:
       - ${{ if parameters.dependsOn }}:
           - ${{ parameters.dependsOn }}
@@ -20,12 +23,11 @@ jobs:
     steps:
       - task: AzureCLI@2
         displayName: add FW rule
-        name: addFWrule
         inputs:
           azureSubscription: ${{ parameters.subscription }}
           scriptType: bash
           scriptLocation: inlineScript
           inlineScript: |
             export ip=$(curl "http://ifconfig.me/ip")
-            az storage account network-rule remove --account-name $(devopsStorageAccount) -g $(devopsResourceGroup) --ip-address $ip/32 
+            az storage account network-rule remove --account-name pipshared${{ parameters.environment }}sa -g pipshared${{ parameters.environment }}rg --ip-address $ip
   

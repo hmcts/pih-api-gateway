@@ -1,0 +1,29 @@
+parameters:
+  - name: dependsOn
+    type: object
+    default: ''
+
+  - name: displayName
+    type: string
+
+  - name: subscription
+    type: string
+
+  - name: environment
+    type: string
+
+
+steps:
+  - bash: export IP=$(curl "http://ifconfig.me/ip") && echo "our IP is $IP" 
+    displayName: Current IP
+  - task: AzureCLI@2 #AddFirewallRule${{ parameters.environment }}
+    displayName: ${{ parameters.displayName }}
+    inputs:
+      azureSubscription: ${{ parameters.subscription }}
+      scriptType: bash
+      scriptLocation: inlineScript
+      inlineScript: |
+        export ip=$(curl "http://ifconfig.me/ip")
+        echo "our IP is $ip"
+        az storage account network-rule add --account-name pipshared${{ parameters.environment }}sa -g pipshared${{ parameters.environment }}rg --ip-address $ip
+        az storage account network-rule list --account-name pipshared${{ parameters.environment }}sa -g pipshared${{ parameters.environment }}rg

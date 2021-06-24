@@ -14,4 +14,4 @@ tags = {
   "environment" : "development"
 }
 enable_mock_header_string = "<set-header name=\"_EnableMocks\" exists-action=\"override\"><value>true</value></set-header>"
-virtual_network_type      = "Internal"
+virtual_network_type      = "None"

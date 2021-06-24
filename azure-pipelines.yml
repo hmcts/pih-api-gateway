@@ -33,14 +33,23 @@ parameters:
       subscription: DTS-SHAREDSERVICES-TEST
       group: PIP-APIM-BUILD-TEST
 
-    - name: stg
-      subscription: DTS-SHAREDSERVICES-STG
-      group: PIP-APIM-BUILD-STG
+    #- name: stg
+    #  subscription: DTS-SHAREDSERVICES-STG
+    #  group: PIP-APIM-BUILD-STG
 
 variables:
   - group: PIP-APIM-Common
 
 stages:
+
+  #- stage: Add_FW_rule
+  #  jobs:
+  #  - ${{ each environment in parameters.environments }}:
+  #    - template: pipeline/jobs/apply-FW.yaml
+  #      parameters:
+  #        displayName: Add Firewall Exception
+  #        subscription: ${{ environment.subscription }}
+  #        environment: ${{ environment.name }}
 
   - stage: Validate
     jobs:
@@ -61,26 +70,32 @@ stages:
         displayName: Plan SBOX
         subscription: DTS-SHAREDSERVICES-SBOX
         group: PIP-APIM-BUILD-SBOX
+        environment: sbox
+
 
   - stage: PlanDEV
     dependsOn: Validate
     condition: and(succeeded(), or(eq('${{ parameters.stage }}', 'DEV'), contains('${{ parameters.stage }}', 'NONPROD'), contains('${{ parameters.stage }}', 'ALL')))
     jobs:
+
     - template: pipeline/jobs/terraform-plan.yaml
       parameters:
         displayName: Plan DEV
         subscription: DTS-SHAREDSERVICES-DEV
         group: PIP-APIM-BUILD-DEV
+        environment: dev
 
   - stage: PlanTEST
     dependsOn: Validate
     condition: and(succeeded(), or(eq('${{ parameters.stage }}', 'TEST'), contains('${{ parameters.stage }}', 'NONPROD'), contains('${{ parameters.stage }}', 'ALL')))
     jobs:
+
     - template: pipeline/jobs/terraform-plan.yaml
       parameters:
         displayName: Plan TEST
         subscription: DTS-SHAREDSERVICES-TEST
         group: PIP-APIM-BUILD-TEST
+        environment: test
 
   - stage: PlanSTG
     dependsOn: Validate
@@ -91,6 +106,7 @@ stages:
         displayName: Plan STG
         subscription: DTS-SHAREDSERVICES-STG
         group: PIP-APIM-BUILD-STG
+        environment: stg
 
   - stage: BuildSBOX
     dependsOn: PlanSbox
@@ -317,3 +333,6 @@ stages:
           displayName: Code Quality Test
           dependsOn:
           - AcceptanceTest
+
+
+

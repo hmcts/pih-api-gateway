@@ -25,8 +25,8 @@ import static uk.gov.hmcts.futurehearings.pip.unit.testing.utils.HeatlhCheckResp
 @DisplayName("GET /health - PIP Health Check")
 public class GET_PipHealthCheck {
 
-    @Value("${resourcesApiRootContext}")
-    private String resourcesApiRootContext;
+    @Value("${healthCheckApiRootContext}")
+    private String healthCheckApiRootContext;
     @Value("${targetInstance}")
     private String targetInstance;
     @Value("${targetSubscriptionKey}")
@@ -48,7 +48,7 @@ public class GET_PipHealthCheck {
     }
 
     private Response whenHeatlhCheckEndPointIsInvoked() {
-        return retrieveResourcesResponseForHealthCheck(targetInstance, resourcesApiRootContext, headersAsMap);
+        return retrieveResourcesResponseForHealthCheck(targetInstance, healthCheckApiRootContext, headersAsMap);
     }
 
     private Response retrieveResourcesResponseForHealthCheck(final String basePath, final String api, final Map<String, Object> headersAsMap) {

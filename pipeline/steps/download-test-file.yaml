@@ -13,6 +13,8 @@ steps:
     displayName: 'Download secure file'
     name: application_${{ parameters.fileName }}
     inputs:
-      secureFile: application-${{ parameters.fileName }}.${{ parameters.fileExtension }}
+      secureFile: application-pip-${{ parameters.fileName }}.${{ parameters.fileExtension }}
   - script: |
+      mkdir $(System.DefaultWorkingDirectory)${{ parameters.filePath }}
       mv $(application_${{ parameters.fileName }}.secureFilePath) $(System.DefaultWorkingDirectory)${{ parameters.filePath }}application-${{ parameters.fileName }}.${{ parameters.fileExtension }}
+      ls -l $(System.DefaultWorkingDirectory)${{ parameters.filePath }}application-${{ parameters.fileName }}.${{ parameters.fileExtension }}

@@ -187,7 +187,7 @@ When building the apim via azdo in a refreshed environment the build stage may f
 
 You can force a purge of this soft deleted object (assuming you have the correct perms) with:
 ```bash
-az rest --method DELETE --uri https://management.azure.com/subscriptions/867a878b-cb68-4de5-9741-361ac9e178b6/providers/Microsoft.ApiManagement/locations/UKSouth/deletedservices/pip-apim-svc-dev?api-version=2020-06-01-preview
+az rest --method DELETE --uri https://management.azure.com/subscriptions/<SUB_ID>/providers/Microsoft.ApiManagement/locations/UKSouth/deletedservices/pip-apim-svc-dev?api-version=2020-06-01-preview
 ```
 
 ## Hystrix

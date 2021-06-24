@@ -193,18 +193,18 @@ stages:
             storageContainer: $[dependencies.CreateStorage.outputs['createContainer.container']]
             subscriptionKey: $[dependencies.ExportKeyVault.outputs['exportKeyVaultSecret.pip-apim-sub-key']]
 
-      - template: pipeline/jobs/test-acceptance.yaml
-        parameters:
-          displayName: Acceptance Test
-          dependsOn:
-          - CreateStorage
-          - ExportKeyVault
-          subscription: DTS-SHAREDSERVICES-SBOX
-          subscriptionKey: $(subscriptionKey)
-          storageContainer: $(storageContainer)
-          variables:
-            storageContainer: $[dependencies.CreateStorage.outputs['createContainer.container']]
-            subscriptionKey: $[dependencies.ExportKeyVault.outputs['exportKeyVaultSecret.pip-apim-sub-key']]
+      #- template: pipeline/jobs/test-acceptance.yaml
+      #  parameters:
+      #    displayName: Acceptance Test
+      #    dependsOn:
+      #    - CreateStorage
+      #    - ExportKeyVault
+      #    subscription: DTS-SHAREDSERVICES-SBOX
+      #    subscriptionKey: $(subscriptionKey)
+      #    storageContainer: $(storageContainer)
+      #    variables:
+      #      storageContainer: $[dependencies.CreateStorage.outputs['createContainer.container']]
+      #      subscriptionKey: $[dependencies.ExportKeyVault.outputs['exportKeyVaultSecret.pip-apim-sub-key']]
 
       - template: pipeline/jobs/test-codequality.yaml
         parameters:
@@ -244,18 +244,18 @@ stages:
             storageContainer: $[dependencies.CreateStorage.outputs['createContainer.container']]
             subscriptionKey: $[dependencies.ExportKeyVault.outputs['exportKeyVaultSecret.pip-apim-sub-key']]
 
-      - template: pipeline/jobs/test-acceptance.yaml
-        parameters:
-          displayName: Acceptance Test
-          dependsOn:
-          - CreateStorage
-          - ExportKeyVault
-          subscription: DTS-SHAREDSERVICES-DEV
-          subscriptionKey: $(subscriptionKey)
-          storageContainer: $(storageContainer)
-          variables:
-            storageContainer: $[dependencies.CreateStorage.outputs['createContainer.container']]
-            subscriptionKey: $[dependencies.ExportKeyVault.outputs['exportKeyVaultSecret.pip-apim-sub-key']]
+      #- template: pipeline/jobs/test-acceptance.yaml
+      #  parameters:
+      #    displayName: Acceptance Test
+      #    dependsOn:
+      #    - CreateStorage
+      #    - ExportKeyVault
+      #    subscription: DTS-SHAREDSERVICES-DEV
+      #    subscriptionKey: $(subscriptionKey)
+      #    storageContainer: $(storageContainer)
+      #    variables:
+      #      storageContainer: $[dependencies.CreateStorage.outputs['createContainer.container']]
+      #      subscriptionKey: $[dependencies.ExportKeyVault.outputs['exportKeyVaultSecret.pip-apim-sub-key']]
 
 
   - stage: TestTEST
@@ -289,44 +289,44 @@ stages:
             storageContainer: $[dependencies.CreateStorage.outputs['createContainer.container']]
             subscriptionKey: $[dependencies.ExportKeyVault.outputs['exportKeyVaultSecret.pip-apim-sub-key']]
 
-      - template: pipeline/jobs/test-acceptance.yaml
-        parameters:
-          displayName: Acceptance Test
-          dependsOn:
-          - CreateStorage
-          - ExportKeyVault
-          subscription: DTS-SHAREDSERVICES-TEST
-          subscriptionKey: $(subscriptionKey)
-          storageContainer: $(storageContainer)
-          variables:
-            storageContainer: $[dependencies.CreateStorage.outputs['createContainer.container']]
-            subscriptionKey: $[dependencies.ExportKeyVault.outputs['exportKeyVaultSecret.pip-apim-sub-key']]
-
-      - template: pipeline/jobs/test-smoke.yaml
-        parameters:
-          displayName: Smoke Test
-          dependsOn:
-          - CreateStorage
-          - ExportKeyVault
-          subscription: DTS-SHAREDSERVICES-TEST
-          subscriptionKey: $(subscriptionKey)
-          storageContainer: $(storageContainer)
-          variables:
-            storageContainer: $[dependencies.CreateStorage.outputs['createContainer.container']]
-            subscriptionKey: $[dependencies.ExportKeyVault.outputs['exportKeyVaultSecret.pip-apim-sub-key']]
-
-      - template: pipeline/jobs/test-functional.yaml
-        parameters:
-          displayName: Functional Test
-          dependsOn:
-          - CreateStorage
-          - ExportKeyVault
-          subscription: DTS-SHAREDSERVICES-TEST
-          subscriptionKey: $(subscriptionKey)
-          storageContainer: $(storageContainer)
-          variables:
-            storageContainer: $[dependencies.CreateStorage.outputs['createContainer.container']]
-            subscriptionKey: $[dependencies.ExportKeyVault.outputs['exportKeyVaultSecret.pip-apim-sub-key']]
+      #- template: pipeline/jobs/test-acceptance.yaml
+      #  parameters:
+      #    displayName: Acceptance Test
+      #    dependsOn:
+      #      - CreateStorage
+      #      - ExportKeyVault
+      #    subscription: DTS-SHAREDSERVICES-TEST
+      #    subscriptionKey: $(subscriptionKey)
+      #    storageContainer: $(storageContainer)
+      #    variables:
+      #      subscriptionKey: $[dependencies.ExportKeyVault.outputs['exportKeyVaultSecret.pip-apim-sub-key']]
+      #      storageContainer: $[dependencies.CreateStorage.outputs['createContainer.container']]
+#
+      #- template: pipeline/jobs/test-smoke.yaml
+      #  parameters:
+      #    displayName: Smoke Test
+      #    dependsOn:
+      #      - CreateStorage
+      #      - ExportKeyVault
+      #    subscription: DTS-SHAREDSERVICES-TEST
+      #    subscriptionKey: $(subscriptionKey)
+      #    storageContainer: $(storageContainer)
+      #    variables:
+      #      storageContainer: $[dependencies.CreateStorage.outputs['createContainer.container']]
+      #      subscriptionKey: $[dependencies.ExportKeyVault.outputs['exportKeyVaultSecret.pip-apim-sub-key']]
+#
+      #- template: pipeline/jobs/test-functional.yaml
+      #  parameters:
+      #    displayName: Functional Test
+      #    dependsOn:
+      #    - CreateStorage
+      #    - ExportKeyVault
+      #    subscription: DTS-SHAREDSERVICES-TEST
+      #    subscriptionKey: $(subscriptionKey)
+      #    storageContainer: $(storageContainer)
+      #    variables:
+      #      storageContainer: $[dependencies.CreateStorage.outputs['createContainer.container']]
+      #      subscriptionKey: $[dependencies.ExportKeyVault.outputs['exportKeyVaultSecret.pip-apim-sub-key']]
 
       - template: pipeline/jobs/test-codequality.yaml
         parameters:

@@ -177,6 +177,17 @@ docker image rm <image-id>
 
 There is no need to remove postgres and java or similar core images.
 
+## Known Issues
+
+When building the apim via azdo in a refreshed environment the build stage may fail with an error similar to:
+
+```"Api service pip-apim-svc-dev was soft-deleted. In order to create the new service with the same name, you have to either undelete the service or purge it
+```
+
+You can force a purge of this soft deleted object (assuming you have the correct perms) with:
+``` az rest --method DELETE --uri https://management.azure.com/subscriptions/867a878b-cb68-4de5-9741-361ac9e178b6/providers/Microsoft.ApiManagement/locations/UKSouth/deletedservices/pip-apim-svc-dev?api-version=2020-06-01-preview
+```
+
 ## Hystrix
 
 [Hystrix](https://github.com/Netflix/Hystrix/wiki) is a library that helps you control the interactions

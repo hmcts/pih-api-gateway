@@ -15,4 +15,4 @@ steps:
     inputs:
       secureFile: application-pip-${{ parameters.fileName }}.${{ parameters.fileExtension }}
   - script: |
-      ls -l $(application_${{ parameters.fileName }}.secureFilePath)
+      ls -l $(System.DefaultWorkingDirectory)${{ parameters.filePath }}application-${{ parameters.fileName }}.${{ parameters.fileExtension }}

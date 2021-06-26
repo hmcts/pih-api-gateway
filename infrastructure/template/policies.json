@@ -5,6 +5,18 @@
       "format": "application/vnd.ms-azure-apim.policy.raw+xml",
       "templateFile": "pip-api-health-check-policy.xml",
       "errorAction": "Stop"
+    },
+    {
+      "operationId": "get-publications",
+      "format": "application/vnd.ms-azure-apim.policy.raw+xml",
+      "templateFile": "pip-api-publications-get-policy.xml",
+      "errorAction": "Stop"
+    },
+    {
+      "operationId": "post-publications",
+      "format": "application/vnd.ms-azure-apim.policy.raw+xml",
+      "templateFile": "pip-api-publications-create-policy.xml",
+      "errorAction": "Stop"
     }
   ]
 }

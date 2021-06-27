@@ -25,4 +25,20 @@ public class PublicationsResponseVerifier {
         }
     }
 
+    public static void thenValidateResponseForPostPublications(Response response){
+        try{
+            Map<String, String> responseMap = response.getBody().jsonPath().getMap("$");
+            assertEquals(201, response.getStatusCode(),"Status Code Validation:");
+            getObjStep().pass("Got the expected status code: 201");
+        }
+        catch (AssertionError e){
+            getObjStep().fail("Exception in "+e.getMessage());
+            throw e;
+        }
+        catch (Exception e){
+            getObjStep().fail("Exception: "+e.getClass());
+            throw e;
+        }
+    }
+
 }

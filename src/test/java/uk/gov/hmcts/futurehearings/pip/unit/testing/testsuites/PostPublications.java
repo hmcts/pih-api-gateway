@@ -67,7 +67,7 @@ public class PostPublications {
     }
 
     @Test
-    @DisplayName("Test for PIP Get Publications")
+    @DisplayName("Test for PIP Create Publications")
     void testInvokeGetPublications() {
         final Response response = whenGetPublicationsIsInvoked();
         thenValidateResponseForPostPublications(response);

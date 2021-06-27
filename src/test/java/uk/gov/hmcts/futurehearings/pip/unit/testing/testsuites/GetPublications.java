@@ -1,7 +1,7 @@
 package uk.gov.hmcts.futurehearings.pip.unit.testing.testsuites;
 
+import io.restassured.response.Response;
 import lombok.extern.slf4j.Slf4j;
-
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
@@ -16,13 +16,12 @@ import org.springframework.test.context.ActiveProfiles;
 import uk.gov.hmcts.futurehearings.pip.unit.testing.utils.TestReporter;
 import uk.gov.hmcts.futurehearings.pip.unit.testing.utils.TestUtilities;
 import uk.gov.hmcts.reform.demo.Application;
-import io.restassured.response.Response;
 
 import java.util.HashMap;
 import java.util.Map;
 
 import static io.restassured.RestAssured.given;
-import static uk.gov.hmcts.futurehearings.pip.unit.testing.utils.PublicationsResponseVerifier.thenValidateResponseForPostPublications;
+import static uk.gov.hmcts.futurehearings.pip.unit.testing.utils.PublicationsResponseVerifier.thenValidateResponseForGetPublications;
 
 @Slf4j
 @SpringBootTest(classes = { Application.class })
@@ -30,8 +29,8 @@ import static uk.gov.hmcts.futurehearings.pip.unit.testing.utils.PublicationsRes
 @ExtendWith(TestReporter.class)
 @TestMethodOrder(MethodOrderer.OrderAnnotation.class)
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
-@DisplayName("POST /publications - PIP Publication Creation")
-public class POST_Publications {
+@DisplayName("GET /publications - PIP Publication Retrival")
+public class GetPublications {
 
     @Value("${publicationsApiRootContext}")
     private String publicationsApiRootContext;
@@ -39,7 +38,7 @@ public class POST_Publications {
     private String targetInstance;
 
     @Value("${tokenURL}")
-    private String tokenURL;
+    private String tokenUrl;
 
     @Value("${clientID}")
     private String clientID;
@@ -58,8 +57,8 @@ public class POST_Publications {
     private final Map<String, Object> headersAsMap = new HashMap<>();
 
     @BeforeAll
-    void setToken(){
-        accessToken = TestUtilities.getToken(grantType, clientID, clientSecret, tokenURL, scope);
+    void setToken() {
+        accessToken = TestUtilities.getToken(grantType, clientID, clientSecret, tokenUrl, scope);
     }
 
     @BeforeEach
@@ -71,7 +70,7 @@ public class POST_Publications {
     @DisplayName("Test for PIP Get Publications")
     void testInvokeGetPublications() {
         final Response response = whenGetPublicationsIsInvoked();
-        thenValidateResponseForPostPublications(response);
+        thenValidateResponseForGetPublications(response);
     }
 
     private Response whenGetPublicationsIsInvoked() {
@@ -81,10 +80,8 @@ public class POST_Publications {
     private Response retrieveResourcesResponseForGetPublications(final String basePath, final String api,
             final Map<String, Object> headersAsMap) {
 
-        return given()
-                .auth()
-                .oauth2(accessToken)
-                .headers(headersAsMap).baseUri(basePath).basePath(api).when().post().then().extract().response();
+        return given().auth().oauth2(accessToken).headers(headersAsMap).baseUri(basePath).basePath(api).when().get()
+                .then().extract().response();
     }
 
 }

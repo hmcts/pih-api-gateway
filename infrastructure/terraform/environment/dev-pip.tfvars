@@ -1,4 +1,4 @@
-apim_sku_name                      = "Developer"
+apim_sku_name                      = "Premium"
 apim_sku_capacity                  = "1"
 publisher_name                     = "HMCTS PIP"
 publisher_email                    = "pip-team@HMCTS.NET"

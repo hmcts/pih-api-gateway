@@ -2,7 +2,7 @@
   <inbound>
     <base />
     <return-response>
-      <set-status code="201" />
+      <set-status code="204" />
       <set-header name="Content-Type" exists-action="override">
         <value>application/json</value>
       </set-header>

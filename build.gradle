@@ -45,6 +45,15 @@ sourceSets {
     }
     resources.srcDir file('src/smokeTest/resources')
   }
+
+  acceptanceTest {
+    java {
+      compileClasspath += main.output
+      runtimeClasspath += main.output
+      srcDir file('src/acceptanceTest/java')
+    }
+    resources.srcDir file('src/acceptanceTest/resources')
+  }
 }
 
 tasks.withType(JavaCompile) {
@@ -82,6 +91,20 @@ task smoke(type: Test) {
   description = "Runs Smoke Tests"
   testClassesDirs = sourceSets.smokeTest.output.classesDirs
   classpath = sourceSets.smokeTest.runtimeClasspath
+}
+
+task acceptance(type: Test) {
+  group = 'Delivery pipeline'
+  description = 'Runs the QA Acceptance tests'
+  useJUnitPlatform()
+  testClassesDirs = sourceSets.acceptanceTest.output.classesDirs
+  classpath = sourceSets.acceptanceTest.runtimeClasspath
+  include "uk/gov/hmcts/futurehearings/pip/acceptance/**"
+  testLogging.showStandardStreams = true
+  systemProperties System.getProperties()
+  environment("APPINSIGHTS_INSTRUMENTATIONKEY", "test-key")
+  enableAssertions = true
+  scanForTestClasses = true
 }
 
 checkstyle {
@@ -212,7 +235,14 @@ dependencies {
   testImplementation group: 'io.rest-assured', name: 'xml-path', version: versions.restAssured
   testImplementation group: 'io.rest-assured', name: 'json-path', version: versions.restAssured
 
+  acceptanceTestAnnotationProcessor 'org.projectlombok:lombok:1.18.12'
+  acceptanceTestImplementation group: 'io.rest-assured', name: 'rest-assured', version: versions.restAssured
+  acceptanceTestImplementation group: 'io.rest-assured', name: 'json-schema-validator', version: versions.restAssured
+  acceptanceTestImplementation group: 'io.rest-assured', name: 'xml-path', version: versions.restAssured
+  acceptanceTestImplementation group: 'io.rest-assured', name: 'json-path', version: versions.restAssured
 
+  acceptanceTestImplementation sourceSets.main.runtimeClasspath
+  acceptanceTestImplementation sourceSets.test.runtimeClasspath
 
   integrationTestImplementation sourceSets.main.runtimeClasspath
   integrationTestImplementation sourceSets.test.runtimeClasspath

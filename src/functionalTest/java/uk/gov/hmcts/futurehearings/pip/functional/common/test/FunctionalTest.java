@@ -28,9 +28,11 @@ import static uk.gov.hmcts.futurehearings.pip.functional.common.security.OAuthTo
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
 public abstract class FunctionalTest {
 
-
     @Value("${targetInstance}")
     protected String targetInstance;
+
+    @Value("${apiRootContext}")
+    protected String apiRootContext;
 
     @Value("${token_apiURL}")
     protected String token_apiURL;

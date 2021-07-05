@@ -90,6 +90,4 @@ public class RestClientTemplate {
                 throw new IllegalArgumentException("HTTP method not identified");
         }
     }
-
-
 }

@@ -175,6 +175,11 @@ stages:
           displayName: Create Storage for Test Results
           subscription: DTS-SHAREDSERVICES-SBOX
 
+      - template: pipeline/jobs/create-dtu-storage.yaml
+          parameters:
+            displayName: Create Storage for dtu
+            subscription: DTS-SHAREDSERVICES-SBOX
+
       - template: pipeline/jobs/export-keyvault.yaml
         parameters:
           displayName: Read APIM Subscription Key

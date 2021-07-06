@@ -81,12 +81,8 @@ task functional(type: Test) {
   testLogging.showStandardStreams = true
   systemProperties System.getProperties()
   environment("APPINSIGHTS_INSTRUMENTATIONKEY", "test-key")
-
   enableAssertions = true
   scanForTestClasses = true
-
-  testLogging.showStandardStreams = true
-  systemProperties System.getProperties()
 }
 
 task integration(type: Test) {
@@ -104,8 +100,8 @@ task smoke(type: Test) {
 }
 
 task acceptance(type: Test) {
-  group = 'Delivery pipeline'
   description = 'Runs the QA Acceptance tests'
+  group = 'Delivery pipeline'
   useJUnitPlatform()
   testClassesDirs = sourceSets.acceptanceTest.output.classesDirs
   classpath = sourceSets.acceptanceTest.runtimeClasspath
@@ -245,6 +241,9 @@ dependencies {
   testImplementation group: 'io.rest-assured', name: 'xml-path', version: versions.restAssured
   testImplementation group: 'io.rest-assured', name: 'json-path', version: versions.restAssured
 
+  integrationTestImplementation sourceSets.main.runtimeClasspath
+  integrationTestImplementation sourceSets.test.runtimeClasspath
+
   acceptanceTestAnnotationProcessor 'org.projectlombok:lombok:1.18.12'
   acceptanceTestImplementation group: 'io.rest-assured', name: 'rest-assured', version: versions.restAssured
   acceptanceTestImplementation group: 'io.rest-assured', name: 'json-schema-validator', version: versions.restAssured
@@ -253,9 +252,6 @@ dependencies {
 
   acceptanceTestImplementation sourceSets.main.runtimeClasspath
   acceptanceTestImplementation sourceSets.test.runtimeClasspath
-
-  integrationTestImplementation sourceSets.main.runtimeClasspath
-  integrationTestImplementation sourceSets.test.runtimeClasspath
 
   functionalTestAnnotationProcessor 'org.projectlombok:lombok:1.18.12'
   functionalTestImplementation group: 'io.rest-assured', name: 'rest-assured', version: versions.restAssured

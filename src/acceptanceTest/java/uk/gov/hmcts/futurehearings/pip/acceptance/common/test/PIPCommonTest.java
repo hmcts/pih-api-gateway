@@ -21,7 +21,7 @@ public abstract class PIPCommonTest {
     public CommonDelegate commonDelegate;
 
     @BeforeAll
-    public void beforeAll(TestInfo info) {
+    static void beforeAll() {
     }
 
     @BeforeEach
@@ -33,7 +33,7 @@ public abstract class PIPCommonTest {
     }
 
     @AfterAll
-    public void afterAll(TestInfo info) {
+    static void afterAll() {
     }
 
 }

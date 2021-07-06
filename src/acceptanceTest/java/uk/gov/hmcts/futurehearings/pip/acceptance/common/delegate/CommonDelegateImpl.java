@@ -39,7 +39,7 @@ public class CommonDelegateImpl implements CommonDelegate {
                         status, httpMethod);
     }
 
-    private static final Headers convertHeaderMapToWireMockHeaders(final Map<String, String> headerMap) {
+    private static Headers convertHeaderMapToWireMockHeaders(final Map<String, String> headerMap) {
         List<Header> listOfHeaders = new ArrayList<>();
         headerMap.forEach((key, value) -> {
             Header header = new Header(key, value);

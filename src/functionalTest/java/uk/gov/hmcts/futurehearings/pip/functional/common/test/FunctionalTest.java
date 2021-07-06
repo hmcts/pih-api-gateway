@@ -57,7 +57,7 @@ public abstract class FunctionalTest {
     protected String authorizationToken;
 
     @BeforeAll
-    public void initialiseValues() throws Exception {
+    public void initialiseValues() {
         RestAssured.config = RestAssured.config()
             .encoderConfig(encoderConfig().appendDefaultContentCharsetToContentTypeIfUndefined(false));
         RestAssured.baseURI = targetInstance;

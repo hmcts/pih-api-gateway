@@ -15,7 +15,7 @@ import java.util.Map;
 @NoArgsConstructor
 public class PayloadHeaderDTOFactory {
 
-    public static final SystemHeaderDTO buildStandardSystemHeaderPart(final String contentType,
+    public static SystemHeaderDTO buildStandardSystemHeaderPart(final String contentType,
                                                                      final String accept,
                                                                      final String authorization,
                                                                      final String contentEncoding,
@@ -29,7 +29,7 @@ public class PayloadHeaderDTOFactory {
             .build();
     }
 
-    public static final Map<String, String> convertToMap(final SystemHeaderDTO systemHeaderDTO) {
+    public static Map<String, String> convertToMap(final SystemHeaderDTO systemHeaderDTO) {
         final Map<String, String> headerMap = new HashMap<>();
         headerMap.put("Content-Type", systemHeaderDTO.contentType());
         return headerMap;

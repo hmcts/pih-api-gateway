@@ -9,7 +9,7 @@ import java.util.Map;
 
 public class CommonHeaderHelper {
 
-    public static final Map<String, String> createStandardPayloadHeader() {
+    public static Map<String, String> createStandardPayloadHeader() {
         return createHeader(MediaType.APPLICATION_JSON_VALUE);
     }
 

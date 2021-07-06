@@ -226,6 +226,11 @@ stages:
     variables:
       - group: PIP-APIM-BUILD-DEV
     jobs:
+      - template: pipeline/jobs/create-dtu-storage.yaml
+        parameters:
+          displayName: Create Storage for dtu
+          subscription: DTS-SHAREDSERVICES-DEV
+
       - template: pipeline/jobs/create-storage.yaml
         parameters:
           displayName: Create Storage for Test Results
@@ -271,6 +276,10 @@ stages:
     variables:
       - group: PIP-APIM-BUILD-TEST
     jobs:
+      parameters:
+        displayName: Create Storage for dtu
+        subscription: DTS-SHAREDSERVICES-TEST
+
       - template: pipeline/jobs/create-storage.yaml
         parameters:
           displayName: Create Storage for Test Results

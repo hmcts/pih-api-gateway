@@ -10,7 +10,7 @@ revision                           = "1"
 service_url                        = ""
 tags = {
   "businessarea" : "cross-cutting",
-  "application" : "hearing-management-interface",
+  "application" : "publication-information-platform",
   "environment" : "sandbox"
 }
 enable_mock_header_string = "<set-header name=\"_EnableMocks\" exists-action=\"override\"><value>true</value></set-header>"

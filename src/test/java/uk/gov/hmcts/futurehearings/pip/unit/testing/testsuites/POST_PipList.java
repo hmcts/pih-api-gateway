@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.ActiveProfiles;
 import uk.gov.hmcts.futurehearings.pip.unit.testing.utils.TestReporter;
+import uk.gov.hmcts.futurehearings.pip.unit.testing.utils.TestUtilities;
 import uk.gov.hmcts.reform.demo.Application;
 
 import java.util.HashMap;
@@ -30,7 +31,29 @@ public class POST_PipList {
     @Value("${targetInstance}")
     private String targetInstance;
 
+    @Value("${tokenURL}")
+    private String tokenURL;
+
+    @Value("${clientID}")
+    private String clientID;
+
+    @Value("${clientSecret}")
+    private String clientSecret;
+
+    @Value("${scope}")
+    private String scope;
+
+    @Value("${grantType}")
+    private String grantType;
+
+    private static String accessToken;
+
     private final Map<String, Object> headersAsMap = new HashMap<>();
+
+    @BeforeAll
+    void setToken(){
+        accessToken = TestUtilities.getToken(grantType, clientID, clientSecret, tokenURL, scope);
+    }
 
     @BeforeEach
     void initialiseValues() {
@@ -50,6 +73,8 @@ public class POST_PipList {
 
     private Response retrieveResponseForCreateList(final String basePath, final String api, final Map<String, Object> headersAsMap) {
         return given()
+            .auth()
+            .oauth2(accessToken)
             .headers(headersAsMap)
             .baseUri(basePath)
             .basePath(api)

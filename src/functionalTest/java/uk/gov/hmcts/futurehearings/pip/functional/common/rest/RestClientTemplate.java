@@ -14,7 +14,7 @@ import org.springframework.http.HttpMethod;
 @Slf4j
 public class RestClientTemplate {
     public static Response performRESTCall(final String apiURL,
-                                           final Map<String, Object> headersAsMap,
+                                           final Map<String, String> headersAsMap,
                                            final String authorizationToken,
                                            final String payloadBody,
                                            final Map<String, String> params,
@@ -38,13 +38,13 @@ public class RestClientTemplate {
                     .when()
                     .put().then().extract().response();
             case DELETE:
-                 return RestAssured.given().body(payloadBody)
-                     .headers(headersAsMap)
-                     .auth()
-                     .oauth2(authorizationToken)
-                     .basePath(apiURL)
-                     .when()
-                     .delete().then().extract().response();
+                return RestAssured.given().body(payloadBody)
+                    .headers(headersAsMap)
+                    .auth()
+                    .oauth2(authorizationToken)
+                    .basePath(apiURL)
+                    .when()
+                    .delete().then().extract().response();
             case GET :
                 if (Objects.isNull(params) || params.size() == 0) {
                     return RestAssured.given()

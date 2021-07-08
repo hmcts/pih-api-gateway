@@ -29,15 +29,12 @@ public class PUT_PipList {
     private String listApiRootContext;
     @Value("${targetInstance}")
     private String targetInstance;
-    @Value("${targetSubscriptionKey}")
-    private String targetSubscriptionKey;
 
     private final Map<String, Object> headersAsMap = new HashMap<>();
 
     @BeforeEach
     void initialiseValues() {
         headersAsMap.put("Content-Type", "application/json");
-        headersAsMap.put("Ocp-Apim-Subscription-Key", targetSubscriptionKey);
     }
 
     @Test

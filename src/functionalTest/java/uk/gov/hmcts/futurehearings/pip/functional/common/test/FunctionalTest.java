@@ -10,14 +10,16 @@ import lombok.Setter;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.TestInstance;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.HttpStatus;
 import org.springframework.test.context.ActiveProfiles;
+import uk.gov.hmcts.futurehearings.pip.functional.common.delegate.CommonDelegate;
 import uk.gov.hmcts.reform.demo.Application;
 
 import static io.restassured.config.EncoderConfig.encoderConfig;
-import static uk.gov.hmcts.futurehearings.pip.functional.common.header.factory.HeaderFactory.createHeader;
+import static uk.gov.hmcts.futurehearings.pip.functional.common.header.dto.factory.HeaderFactory.createHeader;
 import static uk.gov.hmcts.futurehearings.pip.functional.common.security.OAuthTokenGenerator.generateOAuthToken;
 
 @Setter(AccessLevel.PUBLIC)
@@ -27,6 +29,11 @@ import static uk.gov.hmcts.futurehearings.pip.functional.common.security.OAuthTo
 @ActiveProfiles("functional")
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
 public abstract class FunctionalTest {
+
+    protected String authorizationToken;
+
+    @Autowired(required = false)
+    public CommonDelegate commonDelegate;
 
     @Value("${targetInstance}")
     protected String targetInstance;
@@ -53,8 +60,6 @@ public abstract class FunctionalTest {
     protected String scope;
 
     protected Map<String, String> headersAsMap = new HashMap<>();
-
-    protected String authorizationToken;
 
     @BeforeAll
     public void initialiseValues() {

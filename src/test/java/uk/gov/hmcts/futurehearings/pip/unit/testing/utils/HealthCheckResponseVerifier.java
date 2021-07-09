@@ -7,7 +7,7 @@ import java.util.Map;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static uk.gov.hmcts.futurehearings.pip.unit.testing.utils.TestReporter.getObjStep;
 
-public class HeatlhCheckResponseVerifier {
+public class HealthCheckResponseVerifier {
 
     public static void thenValidateResponseForHealthCheck(Response response){
         try{

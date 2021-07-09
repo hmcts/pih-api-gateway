@@ -15,7 +15,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 import static io.restassured.RestAssured.given;
-import static uk.gov.hmcts.futurehearings.pip.unit.testing.utils.HeatlhCheckResponseVerifier.thenValidateResponseForUpdateList;
+import static uk.gov.hmcts.futurehearings.pip.unit.testing.utils.HealthCheckResponseVerifier.thenValidateResponseForUpdateList;
 
 @Slf4j
 @SpringBootTest(classes = {Application.class})

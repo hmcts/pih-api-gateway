@@ -65,7 +65,7 @@ public class RestClientTemplate {
                         .get().then().extract().response();
                 }
             default:
-                throw new UnsupportedOperationException("This REST method is not Supported....");
+                throw new UnsupportedOperationException("This REST method is not supported!");
         }
     }
 }

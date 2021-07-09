@@ -1,10 +1,8 @@
-package uk.gov.hmcts.futurehearings.pip.acceptance.common;
+package uk.gov.hmcts.futurehearings.pip.acceptance.common.rest;
 
 import java.util.Map;
 import java.util.Objects;
-
 import io.restassured.RestAssured;
-import io.restassured.http.Headers;
 import io.restassured.response.Response;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpMethod;
@@ -12,13 +10,13 @@ import org.springframework.http.HttpStatus;
 
 @Slf4j
 public class RestClientTemplate {
-    public static Response performRESTCall(final Headers headers,
-                                         final String authorizationToken,
-                                         final String requestBodyPayload,
-                                         final String requestURL,
-                                         final Map<String, String> params,
-                                         final HttpStatus expectedHttpStatus,
-                                         final HttpMethod httpMethod) {
+    public static Response performRESTCall(final Map<String, String> headers,
+                                           final String authorizationToken,
+                                           final String requestBodyPayload,
+                                           final String requestURL,
+                                           final Map<String, String> params,
+                                           final HttpStatus expectedHttpStatus,
+                                           final HttpMethod httpMethod) {
 
         switch (httpMethod) {
             case POST:
@@ -77,17 +75,8 @@ public class RestClientTemplate {
                         .get().then().extract().response();
                     return response;
                 }
-            case OPTIONS:
-                return RestAssured.expect().that().statusCode(expectedHttpStatus.value())
-                    .given()
-                    .headers(headers)
-                    .auth()
-                    .oauth2(authorizationToken)
-                    .basePath(requestURL)
-                    .when()
-                    .options().then().extract().response();
             default:
-                throw new IllegalArgumentException("HTTP method not identified");
+                throw new UnsupportedOperationException("This REST method is not supported!");
         }
     }
 }

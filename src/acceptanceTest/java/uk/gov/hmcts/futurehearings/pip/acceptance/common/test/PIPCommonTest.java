@@ -8,17 +8,12 @@ import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.TestInfo;
-import org.springframework.beans.factory.annotation.Autowired;
-import uk.gov.hmcts.futurehearings.pip.acceptance.common.delegate.CommonDelegate;
 
 @Slf4j
 @Setter
 @Getter
 public abstract class PIPCommonTest {
     private String authorizationToken;
-
-    @Autowired(required = false)
-    public CommonDelegate commonDelegate;
 
     @BeforeAll
     static void beforeAll() {
@@ -35,5 +30,4 @@ public abstract class PIPCommonTest {
     @AfterAll
     static void afterAll() {
     }
-
 }

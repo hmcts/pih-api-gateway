@@ -25,8 +25,8 @@ import static uk.gov.hmcts.futurehearings.pip.acceptance.common.security.OAuthTo
 @ActiveProfiles("pip-acceptance")
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
 public class ListValidationTest extends PIPCommonTest {
-    @Value("${listRootContext}")
-    private String listRootContext;
+    @Value("${listApiRootContext}")
+    private String listApiRootContext;
 
     @Value("${targetInstance}")
     private String targetInstance;
@@ -69,7 +69,7 @@ public class ListValidationTest extends PIPCommonTest {
         Response response = RestClientTemplate.performRESTCall(createStandardPayloadHeader(),
                                                                getAuthorizationToken(),
                                                                "Test",
-                                                               listRootContext,
+                                                               listApiRootContext,
                                                                null,
                                                                HttpMethod.POST);
 
@@ -81,7 +81,7 @@ public class ListValidationTest extends PIPCommonTest {
         Response response = RestClientTemplate.performRESTCall(createStandardPayloadHeader(),
                                                                "Test",
                                                                "Test",
-                                                               listRootContext,
+                                                               listApiRootContext,
                                                                null,
                                                                HttpMethod.POST);
 
@@ -93,7 +93,7 @@ public class ListValidationTest extends PIPCommonTest {
         Response response =  RestClientTemplate.performRESTCall(createStandardPayloadHeader(),
                                                                 getAuthorizationToken(),
                                                                 "Test",
-                                                                listRootContext,
+                                                                listApiRootContext,
                                                                 null,
                                                                 HttpMethod.PUT);
 
@@ -105,7 +105,7 @@ public class ListValidationTest extends PIPCommonTest {
         Response response =  RestClientTemplate.performRESTCall(createStandardPayloadHeader(),
                                                                 "Test",
                                                                 "Test",
-                                                                listRootContext,
+                                                                listApiRootContext,
                                                                 null,
                                                                 HttpMethod.PUT);
 
@@ -117,7 +117,7 @@ public class ListValidationTest extends PIPCommonTest {
         Response response = RestClientTemplate.performRESTCall(createStandardPayloadHeader(),
                                                                getAuthorizationToken(),
                                                                "Test",
-                                                               listRootContext,
+                                                               listApiRootContext,
                                                                null,
                                                                HttpMethod.DELETE);
 
@@ -129,7 +129,7 @@ public class ListValidationTest extends PIPCommonTest {
         Response response = RestClientTemplate.performRESTCall(createStandardPayloadHeader(),
                                                                "Test",
                                                                "Test",
-                                                               listRootContext,
+                                                               listApiRootContext,
                                                                null,
                                                                HttpMethod.DELETE);
 

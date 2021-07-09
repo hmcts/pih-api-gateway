@@ -23,8 +23,8 @@ import static uk.gov.hmcts.futurehearings.pip.functional.common.header.factory.H
 @ActiveProfiles("pip-functional")
 public class ListAPITest extends FunctionalTest {
 
-    @Value("${listRootContext}")
-    protected String listRootContext;
+    @Value("${listApiRootContext}")
+    protected String listApiRootContext;
 
     @BeforeAll
     public void initialiseValues() {
@@ -36,7 +36,7 @@ public class ListAPITest extends FunctionalTest {
         Response response = RestClientTemplate.performRESTCall(createHeader(),
                                                                getAuthorizationToken(),
                                                                "Test",
-                                                               listRootContext,
+                                                               listApiRootContext,
                                                                null, HttpMethod.POST);
 
         assertEquals(HttpStatus.CREATED.value(), response.statusCode());
@@ -47,7 +47,7 @@ public class ListAPITest extends FunctionalTest {
         Response response = RestClientTemplate.performRESTCall(createHeader(),
                                                                "Test",
                                                                "Test",
-                                                               listRootContext,
+                                                               listApiRootContext,
                                                                null, HttpMethod.POST);
         assertEquals(HttpStatus.UNAUTHORIZED.value(), response.statusCode());
     }
@@ -57,7 +57,7 @@ public class ListAPITest extends FunctionalTest {
         Response response = RestClientTemplate.performRESTCall(createHeader(),
                                                                getAuthorizationToken(),
                                                                "Test",
-                                                               listRootContext,
+                                                               listApiRootContext,
                                                                null, HttpMethod.PUT);
         assertEquals(HttpStatus.NO_CONTENT.value(), response.statusCode());
     }
@@ -67,7 +67,7 @@ public class ListAPITest extends FunctionalTest {
         Response response = RestClientTemplate.performRESTCall(createHeader(),
                                                                "Test",
                                                                "Test",
-                                                               listRootContext,
+                                                               listApiRootContext,
                                                                null, HttpMethod.PUT);
         assertEquals(HttpStatus.UNAUTHORIZED.value(), response.statusCode());
     }
@@ -77,7 +77,7 @@ public class ListAPITest extends FunctionalTest {
         Response response = RestClientTemplate.performRESTCall(createHeader(),
                                                                getAuthorizationToken(),
                                                                "Test",
-                                                               listRootContext,
+                                                               listApiRootContext,
                                                                null, HttpMethod.DELETE);
         assertEquals(HttpStatus.NO_CONTENT.value(), response.statusCode());
     }
@@ -87,7 +87,7 @@ public class ListAPITest extends FunctionalTest {
         Response response = RestClientTemplate.performRESTCall(createHeader(),
                                                                "Test",
                                                                "Test",
-                                                               listRootContext,
+                                                               listApiRootContext,
                                                                null, HttpMethod.DELETE);
         assertEquals(HttpStatus.UNAUTHORIZED.value(), response.statusCode());
     }

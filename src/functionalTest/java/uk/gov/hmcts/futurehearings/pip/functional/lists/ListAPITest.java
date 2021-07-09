@@ -20,7 +20,7 @@ import static uk.gov.hmcts.futurehearings.pip.functional.common.header.factory.H
 @Slf4j
 @SpringBootTest(classes = {Application.class})
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
-@ActiveProfiles("functional")
+@ActiveProfiles("pip-functional")
 public class ListAPITest extends FunctionalTest {
 
     @Value("${listRootContext}")

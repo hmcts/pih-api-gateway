@@ -12,50 +12,42 @@ import org.springframework.http.HttpStatus;
 public class RestClientTemplate {
     public static Response performRESTCall(final Map<String, String> headers,
                                            final String authorizationToken,
-                                           final String requestBodyPayload,
+                                           final String payloadBody,
                                            final String requestURL,
                                            final Map<String, String> params,
-                                           final HttpStatus expectedHttpStatus,
                                            final HttpMethod httpMethod) {
 
         switch (httpMethod) {
             case POST:
-                return RestAssured
-                    .expect().that().statusCode(expectedHttpStatus.value())
-                    .given()
+                return RestAssured.given()
+                    .body(payloadBody)
                     .headers(headers)
                     .auth()
                     .oauth2(authorizationToken)
                     .basePath(requestURL)
-                    .body(requestBodyPayload)
                     .when()
                     .post().then().extract().response();
             case PUT:
-                return RestAssured
-                    .expect().that().statusCode(expectedHttpStatus.value())
-                    .given()
+                return RestAssured.given()
+                    .body(payloadBody)
                     .headers(headers)
                     .auth()
                     .oauth2(authorizationToken)
                     .basePath(requestURL)
-                    .body(requestBodyPayload)
                     .when()
                     .put().then().extract().response();
             case DELETE:
-                return RestAssured
-                    .expect().that().statusCode(expectedHttpStatus.value())
-                    .given()
+                return RestAssured.given()
+                    .body(payloadBody)
                     .headers(headers)
                     .auth()
                     .oauth2(authorizationToken)
                     .basePath(requestURL)
-                    .body(requestBodyPayload)
                     .when()
                     .delete().then().extract().response();
             case GET:
                 if (Objects.isNull(params) || params.size() == 0) {
-                    return RestAssured
-                        .given()
+                    return RestAssured.given()
                         .headers(headers)
                         .auth()
                         .oauth2(authorizationToken)
@@ -64,8 +56,7 @@ public class RestClientTemplate {
                         .get().then().extract().response();
                 } else {
                     Response response = null;
-                    response = RestAssured
-                        .given()
+                    response = RestAssured.given()
                         .queryParams(params)
                         .headers(headers)
                         .auth()

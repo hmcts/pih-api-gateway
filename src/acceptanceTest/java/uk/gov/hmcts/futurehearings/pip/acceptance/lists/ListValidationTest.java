@@ -71,7 +71,6 @@ public class ListValidationTest extends PIPCommonTest {
                                                                "Test",
                                                                listRootContext,
                                                                null,
-                                                               HttpStatus.CREATED,
                                                                HttpMethod.POST);
 
         assertEquals(HttpStatus.CREATED.value(), response.statusCode());
@@ -84,7 +83,6 @@ public class ListValidationTest extends PIPCommonTest {
                                                                "Test",
                                                                listRootContext,
                                                                null,
-                                                               HttpStatus.UNAUTHORIZED,
                                                                HttpMethod.POST);
 
         assertEquals(HttpStatus.UNAUTHORIZED.value(), response.statusCode());
@@ -97,7 +95,6 @@ public class ListValidationTest extends PIPCommonTest {
                                                                 "Test",
                                                                 listRootContext,
                                                                 null,
-                                                                HttpStatus.NO_CONTENT,
                                                                 HttpMethod.PUT);
 
         assertEquals(HttpStatus.NO_CONTENT.value(), response.statusCode());
@@ -110,7 +107,6 @@ public class ListValidationTest extends PIPCommonTest {
                                                                 "Test",
                                                                 listRootContext,
                                                                 null,
-                                                                HttpStatus.UNAUTHORIZED,
                                                                 HttpMethod.PUT);
 
         assertEquals(HttpStatus.UNAUTHORIZED.value(), response.statusCode());
@@ -123,7 +119,6 @@ public class ListValidationTest extends PIPCommonTest {
                                                                "Test",
                                                                listRootContext,
                                                                null,
-                                                               HttpStatus.NO_CONTENT,
                                                                HttpMethod.DELETE);
 
         assertEquals(HttpStatus.NO_CONTENT.value(), response.statusCode());
@@ -136,7 +131,6 @@ public class ListValidationTest extends PIPCommonTest {
                                                                "Test",
                                                                listRootContext,
                                                                null,
-                                                               HttpStatus.UNAUTHORIZED,
                                                                HttpMethod.DELETE);
 
         assertEquals(HttpStatus.UNAUTHORIZED.value(), response.statusCode());

@@ -115,6 +115,12 @@ stages:
         environment: sbox
         dependsOn:
         - TerraformApply
+    - template: pipeline/jobs/export-keyvault.yaml
+      parameters:
+        displayName: Read APIM Subscription Key
+        subscription: DTS-SHAREDSERVICES-SBOX
+        dependsOn: TerraformApply
+        environmentName: sandbox
 
   - stage: BuildDEV
     dependsOn: PlanDev
@@ -133,6 +139,12 @@ stages:
         environment: dev
         dependsOn:
         - TerraformApply
+    - template: pipeline/jobs/export-keyvault.yaml
+      parameters:
+        displayName: Read APIM Subscription Key
+        subscription: DTS-SHAREDSERVICES-DEV
+        dependsOn: TerraformApply
+        environmentName: development
 
   - stage: BuildTEST
     dependsOn: PlanTest
@@ -151,6 +163,12 @@ stages:
         environment: test
         dependsOn:
         - TerraformApply
+    - template: pipeline/jobs/export-keyvault.yaml
+      parameters:
+        displayName: Read APIM Subscription Key
+        subscription: DTS-SHAREDSERVICES-TEST
+        dependsOn: TerraformApply
+        environmentName: test
 
   - stage: TestSBOX
     dependsOn: BuildSbox
@@ -168,11 +186,6 @@ stages:
       - template: pipeline/jobs/create-storage.yaml
         parameters:
           displayName: Create Storage for Test Results
-          subscription: DTS-SHAREDSERVICES-SBOX
-
-      - template: pipeline/jobs/export-keyvault.yaml
-        parameters:
-          displayName: Read APIM Subscription Key
           subscription: DTS-SHAREDSERVICES-SBOX
 
       - template: pipeline/jobs/test-unit.yaml

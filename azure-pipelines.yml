@@ -41,16 +41,6 @@ variables:
   - group: PIP-APIM-Common
 
 stages:
-
-  #- stage: Add_FW_rule
-  #  jobs:
-  #  - ${{ each environment in parameters.environments }}:
-  #    - template: pipeline/jobs/apply-FW.yaml
-  #      parameters:
-  #        displayName: Add Firewall Exception
-  #        subscription: ${{ environment.subscription }}
-  #        environment: ${{ environment.name }}
-
   - stage: Validate
     jobs:
     - ${{ each environment in parameters.environments }}:

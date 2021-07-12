@@ -1,57 +1,51 @@
-package uk.gov.hmcts.futurehearings.pip.functional.common;
+package uk.gov.hmcts.futurehearings.pip.acceptance.common.rest;
 
 import io.restassured.RestAssured;
-import io.restassured.http.Headers;
 import io.restassured.response.Response;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpMethod;
-import org.springframework.http.HttpStatus;
 
 import java.util.Map;
 import java.util.Objects;
 
 @Slf4j
 public class RestClientTemplate {
-    public static Response performRESTCall(final Headers headers,
-                                         final String authorizationToken,
-                                         final String requestBodyPayload,
-                                         final String requestURL,
-                                         final Map<String, String> params,
-                                         final HttpStatus expectedHttpStatus,
-                                         final HttpMethod httpMethod) {
+    public static Response performRESTCall(final Map<String, String> headers,
+                                           final String authorizationToken,
+                                           final String payloadBody,
+                                           final String requestURL,
+                                           final Map<String, String> params,
+                                           final HttpMethod httpMethod) {
 
         switch (httpMethod) {
             case POST:
                 return RestAssured
-                    .expect().that().statusCode(expectedHttpStatus.value())
                     .given()
                     .headers(headers)
                     .auth()
                     .oauth2(authorizationToken)
                     .basePath(requestURL)
-                    .body(requestBodyPayload)
+                    .body(payloadBody)
                     .when()
                     .post().then().extract().response();
             case PUT:
                 return RestAssured
-                    .expect().that().statusCode(expectedHttpStatus.value())
                     .given()
                     .headers(headers)
                     .auth()
                     .oauth2(authorizationToken)
                     .basePath(requestURL)
-                    .body(requestBodyPayload)
+                    .body(payloadBody)
                     .when()
                     .put().then().extract().response();
             case DELETE:
                 return RestAssured
-                    .expect().that().statusCode(expectedHttpStatus.value())
                     .given()
                     .headers(headers)
                     .auth()
                     .oauth2(authorizationToken)
                     .basePath(requestURL)
-                    .body(requestBodyPayload)
+                    .body(payloadBody)
                     .when()
                     .delete().then().extract().response();
             case GET:
@@ -77,17 +71,8 @@ public class RestClientTemplate {
                         .get().then().extract().response();
                     return response;
                 }
-            case OPTIONS:
-                return RestAssured.expect().that().statusCode(expectedHttpStatus.value())
-                    .given()
-                    .headers(headers)
-                    .auth()
-                    .oauth2(authorizationToken)
-                    .basePath(requestURL)
-                    .when()
-                    .options().then().extract().response();
             default:
-                throw new IllegalArgumentException("HTTP method not identified");
+                throw new UnsupportedOperationException("This REST method is not supported!");
         }
     }
 }

@@ -1,8 +1,5 @@
 package uk.gov.hmcts.futurehearings.pip.functional.common.test;
 
-import java.util.HashMap;
-import java.util.Map;
-
 import io.restassured.RestAssured;
 import lombok.AccessLevel;
 import lombok.Getter;
@@ -10,13 +7,14 @@ import lombok.Setter;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.TestInstance;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.HttpStatus;
 import org.springframework.test.context.ActiveProfiles;
-import uk.gov.hmcts.futurehearings.pip.functional.common.delegate.CommonDelegate;
 import uk.gov.hmcts.reform.demo.Application;
+
+import java.util.HashMap;
+import java.util.Map;
 
 import static io.restassured.config.EncoderConfig.encoderConfig;
 import static uk.gov.hmcts.futurehearings.pip.functional.common.header.dto.factory.HeaderFactory.createHeader;
@@ -30,16 +28,8 @@ import static uk.gov.hmcts.futurehearings.pip.functional.common.security.OAuthTo
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
 public abstract class FunctionalTest {
 
-    protected String authorizationToken;
-
-    @Autowired(required = false)
-    public CommonDelegate commonDelegate;
-
     @Value("${targetInstance}")
     protected String targetInstance;
-
-    @Value("${apiRootContext}")
-    protected String apiRootContext;
 
     @Value("${token_apiURL}")
     protected String token_apiURL;
@@ -60,6 +50,7 @@ public abstract class FunctionalTest {
     protected String scope;
 
     protected Map<String, String> headersAsMap = new HashMap<>();
+    protected String authorizationToken;
 
     @BeforeAll
     public void initialiseValues() {
@@ -73,8 +64,8 @@ public abstract class FunctionalTest {
                                                      grantType, clientID,
                                                      clientSecret,
                                                      scope,
-                                                     HttpStatus.OK
-        );
+                                                     HttpStatus.OK);
+
         this.setAuthorizationToken(authorizationToken);
         headersAsMap = createHeader();
     }

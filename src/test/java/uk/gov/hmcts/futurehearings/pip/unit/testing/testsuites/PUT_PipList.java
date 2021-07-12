@@ -15,7 +15,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 import static io.restassured.RestAssured.given;
-import static uk.gov.hmcts.futurehearings.pip.unit.testing.utils.HealthCheckResponseVerifier.thenValidateResponseForHealthCheck;
+import static uk.gov.hmcts.futurehearings.pip.unit.testing.utils.HealthCheckResponseVerifier.thenValidateResponseForUpdateList;
 
 @Slf4j
 @SpringBootTest(classes = {Application.class})
@@ -23,11 +23,11 @@ import static uk.gov.hmcts.futurehearings.pip.unit.testing.utils.HealthCheckResp
 @ExtendWith(TestReporter.class)
 @TestMethodOrder(MethodOrderer.OrderAnnotation.class)
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
-@DisplayName("GET /health - PIP Health Check")
-public class GET_PipHealthCheck {
+@DisplayName("UPDATE /list - PIP Update List")
+public class PUT_PipList {
 
-    @Value("${healthCheckApiRootContext}")
-    private String healthCheckApiRootContext;
+    @Value("${listApiRootContext}")
+    private String listApiRootContext;
     @Value("${targetInstance}")
     private String targetInstance;
 
@@ -50,6 +50,7 @@ public class GET_PipHealthCheck {
 
     private final Map<String, Object> headersAsMap = new HashMap<>();
 
+
     @BeforeAll
     void setToken(){
         accessToken = TestUtilities.getToken(grantType, clientID, clientSecret, tokenURL, scope);
@@ -61,27 +62,25 @@ public class GET_PipHealthCheck {
     }
 
     @Test
-    @DisplayName("Test for PIP Health Check")
+    @DisplayName("Test for Update List from PIP")
     void testInvokeHealthCheckForPip() {
-        final Response response = whenHeatlhCheckEndPointIsInvoked();
-        thenValidateResponseForHealthCheck(response);
+        final Response response = whenUpdateListIsInvoked();
+        thenValidateResponseForUpdateList(response);
     }
 
-    private Response whenHeatlhCheckEndPointIsInvoked() {
-        return retrieveResourcesResponseForHealthCheck(targetInstance, healthCheckApiRootContext, headersAsMap);
+    private Response whenUpdateListIsInvoked() {
+        return retrieveResponseForUpdateList(targetInstance, listApiRootContext, headersAsMap);
     }
 
-    private Response retrieveResourcesResponseForHealthCheck(final String basePath, final String api, final Map<String, Object> headersAsMap) {
-
+    private Response retrieveResponseForUpdateList(final String basePath, final String api, final Map<String, Object> headersAsMap) {
         return given()
             .auth()
             .oauth2(accessToken)
             .headers(headersAsMap)
             .baseUri(basePath)
             .basePath(api)
-            .when().get().then().extract().response();
+            .when().put().then().extract().response();
     }
-
 
 }
 

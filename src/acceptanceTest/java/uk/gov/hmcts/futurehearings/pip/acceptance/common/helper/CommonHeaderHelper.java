@@ -14,7 +14,7 @@ public class CommonHeaderHelper {
     }
 
 
-    public static Map<String, String> createHeader(final String contentType) {
+    private static Map<String, String> createHeader(final String contentType) {
         return Collections.unmodifiableMap(convertToMap(
             buildStandardSystemHeaderPart(contentType,null,null,null,null)));
     }

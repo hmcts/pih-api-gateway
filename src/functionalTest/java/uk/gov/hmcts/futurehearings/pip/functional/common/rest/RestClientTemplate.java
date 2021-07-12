@@ -13,54 +13,55 @@ import org.springframework.http.HttpMethod;
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
 @Slf4j
 public class RestClientTemplate {
-    public static Response performRESTCall(final String apiURL,
-                                           final Map<String, Object> headersAsMap,
+
+    public static Response performRESTCall(final Map<String, String> headers,
                                            final String authorizationToken,
                                            final String payloadBody,
+                                           final String requestURL,
                                            final Map<String, String> params,
                                            final HttpMethod httpMethod) {
 
         switch (httpMethod) {
             case POST:
                 return RestAssured.given().body(payloadBody)
-                    .headers(headersAsMap)
+                    .headers(headers)
                     .auth()
                     .oauth2(authorizationToken)
-                    .basePath(apiURL)
+                    .basePath(requestURL)
                     .when()
                     .post().then().extract().response();
             case PUT:
                 return RestAssured.given().body(payloadBody)
-                    .headers(headersAsMap)
+                    .headers(headers)
                     .auth()
                     .oauth2(authorizationToken)
-                    .basePath(apiURL)
+                    .basePath(requestURL)
                     .when()
                     .put().then().extract().response();
             case DELETE:
-                 return RestAssured.given().body(payloadBody)
-                     .headers(headersAsMap)
-                     .auth()
-                     .oauth2(authorizationToken)
-                     .basePath(apiURL)
-                     .when()
-                     .delete().then().extract().response();
+                return RestAssured.given().body(payloadBody)
+                    .headers(headers)
+                    .auth()
+                    .oauth2(authorizationToken)
+                    .basePath(requestURL)
+                    .when()
+                    .delete().then().extract().response();
             case GET :
                 if (Objects.isNull(params) || params.size() == 0) {
                     return RestAssured.given()
-                        .headers(headersAsMap)
+                        .headers(headers)
                         .auth()
                         .oauth2(authorizationToken)
-                        .basePath(apiURL)
+                        .basePath(requestURL)
                         .when()
                         .get().then().extract().response();
                 } else {
                     return RestAssured.given()
-                        .headers(headersAsMap)
+                        .headers(headers)
                         .queryParams(params)
                         .auth()
                         .oauth2(authorizationToken)
-                        .basePath(apiURL)
+                        .basePath(requestURL)
                         .when()
                         .get().then().extract().response();
                 }

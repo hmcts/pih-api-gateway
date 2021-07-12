@@ -15,7 +15,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 import static io.restassured.RestAssured.given;
-import static uk.gov.hmcts.futurehearings.pip.unit.testing.utils.HealthCheckResponseVerifier.thenValidateResponseForHealthCheck;
+import static uk.gov.hmcts.futurehearings.pip.unit.testing.utils.HealthCheckResponseVerifier.thenValidateResponseForCreateList;
 
 @Slf4j
 @SpringBootTest(classes = {Application.class})
@@ -23,11 +23,11 @@ import static uk.gov.hmcts.futurehearings.pip.unit.testing.utils.HealthCheckResp
 @ExtendWith(TestReporter.class)
 @TestMethodOrder(MethodOrderer.OrderAnnotation.class)
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
-@DisplayName("GET /health - PIP Health Check")
-public class GET_PipHealthCheck {
+@DisplayName("POST /list - PIP Create List")
+public class POST_PipList {
 
-    @Value("${healthCheckApiRootContext}")
-    private String healthCheckApiRootContext;
+    @Value("${listApiRootContext}")
+    private String listApiRootContext;
     @Value("${targetInstance}")
     private String targetInstance;
 
@@ -61,27 +61,24 @@ public class GET_PipHealthCheck {
     }
 
     @Test
-    @DisplayName("Test for PIP Health Check")
+    @DisplayName("Test for Get List from PIP")
     void testInvokeHealthCheckForPip() {
-        final Response response = whenHeatlhCheckEndPointIsInvoked();
-        thenValidateResponseForHealthCheck(response);
+        final Response response = whenCreateListIsInvoked();
+        thenValidateResponseForCreateList(response);
     }
 
-    private Response whenHeatlhCheckEndPointIsInvoked() {
-        return retrieveResourcesResponseForHealthCheck(targetInstance, healthCheckApiRootContext, headersAsMap);
+    private Response whenCreateListIsInvoked() {
+        return retrieveResponseForCreateList(targetInstance, listApiRootContext, headersAsMap);
     }
 
-    private Response retrieveResourcesResponseForHealthCheck(final String basePath, final String api, final Map<String, Object> headersAsMap) {
-
+    private Response retrieveResponseForCreateList(final String basePath, final String api, final Map<String, Object> headersAsMap) {
         return given()
             .auth()
             .oauth2(accessToken)
             .headers(headersAsMap)
             .baseUri(basePath)
             .basePath(api)
-            .when().get().then().extract().response();
+            .when().post().then().extract().response();
     }
 
-
 }
-

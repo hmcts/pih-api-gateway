@@ -115,9 +115,9 @@ stages:
         environment: sbox
         dependsOn:
         - TerraformApply
-    - template: pipeline/jobs/export-keyvault.yaml
+    - template: pipeline/jobs/create-dtu-storage.yaml
       parameters:
-        displayName: Read APIM Subscription Key
+        displayName: Create Storage for dtu
         subscription: DTS-SHAREDSERVICES-SBOX
         dependsOn: TerraformApply
         environmentName: sandbox
@@ -139,9 +139,9 @@ stages:
         environment: dev
         dependsOn:
         - TerraformApply
-    - template: pipeline/jobs/export-keyvault.yaml
+    - template: pipeline/jobs/create-dtu-storage.yaml
       parameters:
-        displayName: Read APIM Subscription Key
+        displayName: Create Storage for dtu
         subscription: DTS-SHAREDSERVICES-DEV
         dependsOn: TerraformApply
         environmentName: development
@@ -163,9 +163,9 @@ stages:
         environment: test
         dependsOn:
         - TerraformApply
-    - template: pipeline/jobs/export-keyvault.yaml
+    - template: pipeline/jobs/create-dtu-storage.yaml
       parameters:
-        displayName: Read APIM Subscription Key
+        displayName: Create Storage for dtu
         subscription: DTS-SHAREDSERVICES-TEST
         dependsOn: TerraformApply
         environmentName: test
@@ -178,14 +178,9 @@ stages:
     variables:
       - group: PIP-APIM-BUILD-SBOX
     jobs:
-      - template: pipeline/jobs/create-dtu-storage.yaml
+      - template: pipeline/jobs/export-keyvault.yaml
         parameters:
-          displayName: Create Storage for dtu
-          subscription: DTS-SHAREDSERVICES-SBOX
-
-      - template: pipeline/jobs/create-storage.yaml
-        parameters:
-          displayName: Create Storage for Test Results
+          displayName: Read APIM Subscription Key
           subscription: DTS-SHAREDSERVICES-SBOX
 
       - template: pipeline/jobs/test-unit.yaml
@@ -229,11 +224,6 @@ stages:
     variables:
       - group: PIP-APIM-BUILD-DEV
     jobs:
-      - template: pipeline/jobs/create-dtu-storage.yaml
-        parameters:
-          displayName: Create Storage for dtu
-          subscription: DTS-SHAREDSERVICES-DEV
-
       - template: pipeline/jobs/create-storage.yaml
         parameters:
           displayName: Create Storage for Test Results
@@ -279,11 +269,6 @@ stages:
     variables:
       - group: PIP-APIM-BUILD-TEST
     jobs:
-      - template: pipeline/jobs/create-dtu-storage.yaml
-        parameters:
-          displayName: Create Storage for dtu
-          subscription: DTS-SHAREDSERVICES-TEST
-
       - template: pipeline/jobs/create-storage.yaml
         parameters:
           displayName: Create Storage for Test Results

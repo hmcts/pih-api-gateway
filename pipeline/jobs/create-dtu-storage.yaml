@@ -43,4 +43,4 @@ jobs:
             echo "- cft"
             echo "Updating Key Vault $kvName"
             az keyvault secret set --name "dtu-storage-account-key" --value $key --vault-name $kvName
-            cho "Creating containers complete"
+            echo "Creating containers complete"

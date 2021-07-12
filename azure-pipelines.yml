@@ -178,6 +178,11 @@ stages:
     variables:
       - group: PIP-APIM-BUILD-SBOX
     jobs:
+      - template: pipeline/jobs/create-storage.yaml
+        parameters:
+          displayName: Create Storage for Test Results
+          subscription: DTS-SHAREDSERVICES-SBOX
+          
       - template: pipeline/jobs/export-keyvault.yaml
         parameters:
           displayName: Read APIM Subscription Key

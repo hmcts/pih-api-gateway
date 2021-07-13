@@ -9,6 +9,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.HttpStatus;
 import org.springframework.test.context.ActiveProfiles;
+import uk.gov.hmcts.futurehearings.pip.acceptance.common.test.*;
 import uk.gov.hmcts.reform.demo.Application;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -19,7 +20,7 @@ import static uk.gov.hmcts.futurehearings.pip.acceptance.common.rest.RestClientT
 @SpringBootTest(classes = {Application.class})
 @ActiveProfiles("acceptance")
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
-public class GETPublicationsTest extends PublicationValidationTest {
+public class GETPublicationsTest extends Acceptance {
 
     @Value("${publicationsRootContext}")
     private String publicationsRootContext;

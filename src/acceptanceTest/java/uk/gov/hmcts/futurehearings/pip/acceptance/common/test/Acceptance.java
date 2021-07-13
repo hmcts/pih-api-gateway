@@ -1,4 +1,4 @@
-package uk.gov.hmcts.futurehearings.pip.acceptance.publications;
+package uk.gov.hmcts.futurehearings.pip.acceptance.common.test;
 
 import io.restassured.RestAssured;
 import lombok.AccessLevel;
@@ -22,7 +22,7 @@ import static uk.gov.hmcts.futurehearings.pip.acceptance.common.security.OAuthTo
 @SpringBootTest(classes = {Application.class})
 @ActiveProfiles("acceptance")
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
-public abstract class PublicationValidationTest {
+public abstract class Acceptance {
 
     protected String authorizationToken;
 

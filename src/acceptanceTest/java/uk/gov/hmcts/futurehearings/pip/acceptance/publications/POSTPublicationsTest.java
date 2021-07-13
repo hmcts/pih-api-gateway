@@ -9,7 +9,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.HttpStatus;
 import org.springframework.test.context.ActiveProfiles;
-import uk.gov.hmcts.futurehearings.pip.acceptance.common.test.*;
+import uk.gov.hmcts.futurehearings.pip.acceptance.common.test.AcceptanceTest;
 import uk.gov.hmcts.reform.demo.Application;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 

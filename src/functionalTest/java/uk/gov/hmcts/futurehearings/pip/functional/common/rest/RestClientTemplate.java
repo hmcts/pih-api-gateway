@@ -13,13 +13,13 @@ import java.util.Objects;
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
 @Slf4j
 public class RestClientTemplate {
-    public static Response performRESTCall(
-                                           final Map<String, String> headers,
+    public static Response performRESTCall(final Map<String, String> headers,
                                            final String authorizationToken,
                                            final String payloadBody,
                                            final String requestURL,
                                            final Map<String, String> params,
                                            final HttpMethod httpMethod) {
+
         switch (httpMethod) {
             case POST:
                 return RestAssured
@@ -30,7 +30,8 @@ public class RestClientTemplate {
                     .oauth2(authorizationToken)
                     .basePath(requestURL)
                     .when()
-                    .post().then().extract().response();
+                    .post()
+                    .then().extract().response();
             case PUT:
                 return RestAssured
                     .given()
@@ -40,7 +41,8 @@ public class RestClientTemplate {
                     .oauth2(authorizationToken)
                     .basePath(requestURL)
                     .when()
-                    .put().then().extract().response();
+                    .put()
+                    .then().extract().response();
             case DELETE:
                  return RestAssured
                      .given()
@@ -50,7 +52,8 @@ public class RestClientTemplate {
                      .oauth2(authorizationToken)
                      .basePath(requestURL)
                      .when()
-                     .delete().then().extract().response();
+                     .delete()
+                     .then().extract().response();
             case GET :
                 if (Objects.isNull(params) || params.size() == 0) {
                     return RestAssured
@@ -60,7 +63,8 @@ public class RestClientTemplate {
                         .oauth2(authorizationToken)
                         .basePath(requestURL)
                         .when()
-                        .get().then().extract().response();
+                        .get()
+                        .then().extract().response();
                 } else {
                     return RestAssured
                         .given()
@@ -70,7 +74,8 @@ public class RestClientTemplate {
                         .oauth2(authorizationToken)
                         .basePath(requestURL)
                         .when()
-                        .get().then().extract().response();
+                        .get()
+                        .then().extract().response();
                 }
             default:
                 throw new UnsupportedOperationException("This REST method is not supported!");

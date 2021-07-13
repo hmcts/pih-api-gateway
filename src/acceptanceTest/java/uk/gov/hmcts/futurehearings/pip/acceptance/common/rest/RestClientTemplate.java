@@ -27,7 +27,8 @@ public class RestClientTemplate {
                     .basePath(requestURL)
                     .body(payloadBody)
                     .when()
-                    .post().then().extract().response();
+                    .post()
+                    .then().extract().response();
             case PUT:
                 return RestAssured
                     .given()
@@ -37,7 +38,8 @@ public class RestClientTemplate {
                     .basePath(requestURL)
                     .body(payloadBody)
                     .when()
-                    .put().then().extract().response();
+                    .put()
+                    .then().extract().response();
             case DELETE:
                 return RestAssured
                     .given()
@@ -47,7 +49,8 @@ public class RestClientTemplate {
                     .basePath(requestURL)
                     .body(payloadBody)
                     .when()
-                    .delete().then().extract().response();
+                    .delete()
+                    .then().extract().response();
             case GET:
                 if (Objects.isNull(params) || params.size() == 0) {
                     return RestAssured
@@ -57,10 +60,10 @@ public class RestClientTemplate {
                         .oauth2(authorizationToken)
                         .basePath(requestURL)
                         .when()
-                        .get().then().extract().response();
+                        .get()
+                        .then().extract().response();
                 } else {
-                    Response response;
-                    response = RestAssured
+                    return RestAssured
                         .given()
                         .queryParams(params)
                         .headers(headers)
@@ -68,8 +71,8 @@ public class RestClientTemplate {
                         .oauth2(authorizationToken)
                         .basePath(requestURL)
                         .when()
-                        .get().then().extract().response();
-                    return response;
+                        .get()
+                        .then().extract().response();
                 }
             default:
                 throw new UnsupportedOperationException("This REST method is not supported!");

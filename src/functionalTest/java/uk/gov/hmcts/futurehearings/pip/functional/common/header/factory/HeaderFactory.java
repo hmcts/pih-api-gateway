@@ -1,4 +1,4 @@
-package uk.gov.hmcts.futurehearings.pip.functional.common.header.dto.factory;
+package uk.gov.hmcts.futurehearings.pip.functional.common.header.factory;
 
 import java.util.Collections;
 import java.util.HashMap;

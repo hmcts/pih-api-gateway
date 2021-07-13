@@ -20,11 +20,9 @@ import static uk.gov.hmcts.futurehearings.pip.acceptance.common.security.OAuthTo
 @Getter(AccessLevel.PUBLIC)
 @Slf4j
 @SpringBootTest(classes = {Application.class})
-@ActiveProfiles("acceptance")
+@ActiveProfiles("pip-acceptance")
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
-public abstract class Acceptance {
-
-    protected String authorizationToken;
+public abstract class AcceptanceTest {
 
     @Value("${targetInstance}")
     private String targetInstance;
@@ -46,6 +44,8 @@ public abstract class Acceptance {
 
     @Value("${scope}")
     private String scope;
+
+    private String authorizationToken;
 
     @BeforeAll
     public void initialiseValues() {

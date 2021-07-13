@@ -13,12 +13,12 @@ import uk.gov.hmcts.futurehearings.pip.functional.common.test.FunctionalTest;
 import uk.gov.hmcts.reform.demo.Application;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static uk.gov.hmcts.futurehearings.pip.functional.common.helper.CommonHeaderHelper.createStandardPayloadHeader;
+import static uk.gov.hmcts.futurehearings.pip.functional.common.header.factory.HeaderFactory.createHeader;
 import static uk.gov.hmcts.futurehearings.pip.functional.common.rest.RestClientTemplate.performRESTCall;
 
 @Slf4j
 @SpringBootTest(classes = {Application.class})
-@ActiveProfiles("functional")
+@ActiveProfiles("pip-functional")
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
 public class POSTPublicationsTest extends FunctionalTest {
 
@@ -27,7 +27,7 @@ public class POSTPublicationsTest extends FunctionalTest {
 
     @Test
     void testPostPublication() {
-        Response response = performRESTCall(createStandardPayloadHeader(),
+        Response response = performRESTCall(createHeader(),
                                             getAuthorizationToken(),
                                             "Test",
                                             publicationsRootContext,
@@ -39,7 +39,7 @@ public class POSTPublicationsTest extends FunctionalTest {
 
     @Test
     void testPostPublicationNotAuthorised() {
-        Response response = performRESTCall(createStandardPayloadHeader(),
+        Response response = performRESTCall(createHeader(),
                                             "invalid token",
                                             "Test",
                                             publicationsRootContext,

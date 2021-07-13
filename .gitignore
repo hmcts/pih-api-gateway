@@ -6,6 +6,11 @@
 /src/test/resources/application-test.yaml
 /src/integrationTest/resources/application-integration.yaml
 
+/src/acceptanceTest/resources/application-pip-acceptance.yaml
+/src/functionalTest/resources/application-pip-functional.yaml
+/src/smokeTest/resources/application-pip-smoke.yaml
+/src/test/resources/application-pip-test.yaml
+/src/integrationTest/resources/application-pip-integration.yaml
 
 .gradle
 /build/

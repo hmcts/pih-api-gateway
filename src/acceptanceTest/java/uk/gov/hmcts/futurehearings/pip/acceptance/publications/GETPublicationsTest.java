@@ -18,9 +18,9 @@ import static uk.gov.hmcts.futurehearings.pip.acceptance.common.rest.RestClientT
 
 @Slf4j
 @SpringBootTest(classes = {Application.class})
-@ActiveProfiles("acceptance")
+@ActiveProfiles("pip-acceptance")
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
-public class GETPublicationsTest extends Acceptance {
+public class GETPublicationsTest extends AcceptanceTest {
 
     @Value("${publicationsRootContext}")
     private String publicationsRootContext;

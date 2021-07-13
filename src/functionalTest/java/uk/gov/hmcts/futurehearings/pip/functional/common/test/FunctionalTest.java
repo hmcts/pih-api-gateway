@@ -17,40 +17,41 @@ import java.util.HashMap;
 import java.util.Map;
 
 import static io.restassured.config.EncoderConfig.encoderConfig;
-import static uk.gov.hmcts.futurehearings.pip.functional.common.header.dto.factory.HeaderFactory.createHeader;
+import static uk.gov.hmcts.futurehearings.pip.functional.common.header.factory.HeaderFactory.createHeader;
 import static uk.gov.hmcts.futurehearings.pip.functional.common.security.OAuthTokenGenerator.generateOAuthToken;
 
 @Setter(AccessLevel.PUBLIC)
 @Getter(AccessLevel.PUBLIC)
 @Slf4j
 @SpringBootTest(classes = {Application.class})
-@ActiveProfiles("functional")
+@ActiveProfiles("pip-functional")
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
 public abstract class FunctionalTest {
 
     @Value("${targetInstance}")
-    protected String targetInstance;
+    private String targetInstance;
 
     @Value("${token_apiURL}")
-    protected String token_apiURL;
+    private String token_apiURL;
 
     @Value("${token_apiTenantId}")
-    protected String token_apiTenantId;
+    private String token_apiTenantId;
 
     @Value("${grantType}")
-    protected String grantType;
+    private String grantType;
 
     @Value("${clientID}")
-    protected String clientID;
+    private String clientID;
 
     @Value("${clientSecret}")
-    protected String clientSecret;
+    private String clientSecret;
 
     @Value("${scope}")
-    protected String scope;
+    private String scope;
 
-    protected Map<String, String> headersAsMap = new HashMap<>();
-    protected String authorizationToken;
+    private Map<String, String> headersAsMap = new HashMap<>();
+
+    private String authorizationToken;
 
     @BeforeAll
     public void initialiseValues() {

@@ -33,13 +33,16 @@ jobs:
             accountName="pipdtu$(environment)"
             resourceGroup="pip-sharedinfra-$(environment)-rg"
             kvName="pip-shared-kv-$(environment)"
-            
+
             az storage account create -n $accountName -g $resourceGroup -l "uksouth" --sku Standard_LRS --kind StorageV2 --tags application=hearing-management-interface businessarea=cross-cutting environment=${{ parameters.environmentName }}
             echo "Acquiring storage key"
             key=$(az storage account keys list -g $resourceGroup --account-name $accountName --query "[0].value" -o tsv)
             echo "##vso[task.setvariable variable=storageKey;issecret=true;]$key"
             echo "Creating containers..."
-            az storage container create --name "cft" --account-name $accountName --account-key $key
+            az storage container create --name "legacy-cft" --account-name $accountName --account-key $key
+            az storage container create --name "reformed-cft" --account-name $accountName --account-key $key
+            az storage container create --name "future-data" --account-name $accountName --account-key $key
+            az storage container create --name "scheduling-listing" --account-name $accountName --account-key $key
             echo "- cft"
             echo "Updating Key Vault $kvName"
             az keyvault secret set --name "dtu-storage-account-key" --value $key --vault-name $kvName

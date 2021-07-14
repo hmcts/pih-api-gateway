@@ -38,7 +38,7 @@ public class POSTPublicationsTest extends FunctionalTest {
     }
 
     @Test
-    void testPostPublicationNotAuthorised() {
+    void testPostPublicationNotAuthorized() {
         Response response = performRESTCall(createHeader(),
                                             "invalid token",
                                             "Test",

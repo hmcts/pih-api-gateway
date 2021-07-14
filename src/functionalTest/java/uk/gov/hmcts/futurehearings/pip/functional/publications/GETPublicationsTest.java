@@ -38,7 +38,7 @@ public class GETPublicationsTest extends FunctionalTest {
     }
 
     @Test
-    void testGetPublicationNotAuthorised() {
+    void testGetPublicationNotAuthorized() {
         Response response = performRESTCall(createHeader(),
                                             "invalid token",
                                             "Test",

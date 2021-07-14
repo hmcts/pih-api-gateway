@@ -38,7 +38,7 @@ public class GETPublicationsTest extends AcceptanceTest {
     }
 
     @Test
-    void testGetPublicationNotAuthorised() {
+    void testGetPublicationNotAuthorized() {
         Response response = performRESTCall(createStandardPayloadHeader(),
                                             "invalid token",
                                             "Test",

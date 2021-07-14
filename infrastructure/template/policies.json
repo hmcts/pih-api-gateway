@@ -16,7 +16,7 @@
       "operationId": "post-publications",
       "format": "application/vnd.ms-azure-apim.policy.raw+xml",
       "templateFile": "pip-api-publications-create-policy.xml",
-      "errorActiion": "Stop"
+      "errorAction": "Stop"
     },
     {
       "operationId": "create-lists",

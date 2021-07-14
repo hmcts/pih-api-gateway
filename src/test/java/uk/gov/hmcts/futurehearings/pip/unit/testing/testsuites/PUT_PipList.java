@@ -2,12 +2,7 @@ package uk.gov.hmcts.futurehearings.pip.unit.testing.testsuites;
 
 import io.restassured.response.Response;
 import lombok.extern.slf4j.Slf4j;
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.DisplayName;
-import org.junit.jupiter.api.MethodOrderer;
-import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.TestInstance;
-import org.junit.jupiter.api.TestMethodOrder;
+import org.junit.jupiter.api.*;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -20,19 +15,19 @@ import java.util.HashMap;
 import java.util.Map;
 
 import static io.restassured.RestAssured.given;
-import static uk.gov.hmcts.futurehearings.pip.unit.testing.utils.HealthCheckResponseVerifier.thenValidateResponseForHealthCheck;
+import static uk.gov.hmcts.futurehearings.pip.unit.testing.utils.HealthCheckResponseVerifier.thenValidateResponseForUpdateList;
 
 @Slf4j
-@SpringBootTest(classes = { Application.class })
+@SpringBootTest(classes = {Application.class})
 @ActiveProfiles("test")
 @ExtendWith(TestReporter.class)
 @TestMethodOrder(MethodOrderer.OrderAnnotation.class)
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
-@DisplayName("GET /health - PIP Health Check")
-public class GetPipHealthCheck {
+@DisplayName("UPDATE /list - PIP Update List")
+public class PUT_PipList {
 
-    @Value("${healthCheckApiRootContext}")
-    private String healthCheckApiRootContext;
+    @Value("${listApiRootContext}")
+    private String listApiRootContext;
     @Value("${targetInstance}")
     private String targetInstance;
 
@@ -55,6 +50,7 @@ public class GetPipHealthCheck {
 
     private final Map<String, Object> headersAsMap = new HashMap<>();
 
+
     @BeforeAll
     void setToken(){
         accessToken = TestUtilities.getToken(grantType, clientID, clientSecret, tokenURL, scope);
@@ -66,26 +62,25 @@ public class GetPipHealthCheck {
     }
 
     @Test
-    @DisplayName("Test for PIP Health Check")
+    @DisplayName("Test for Update List from PIP")
     void testInvokeHealthCheckForPip() {
-        final Response response = whenHeatlhCheckEndPointIsInvoked();
-        thenValidateResponseForHealthCheck(response);
+        final Response response = whenUpdateListIsInvoked();
+        thenValidateResponseForUpdateList(response);
     }
 
-    private Response whenHeatlhCheckEndPointIsInvoked() {
-        return retrieveResourcesResponseForHealthCheck(targetInstance, healthCheckApiRootContext, headersAsMap);
+    private Response whenUpdateListIsInvoked() {
+        return retrieveResponseForUpdateList(targetInstance, listApiRootContext, headersAsMap);
     }
 
-    private Response retrieveResourcesResponseForHealthCheck(final String basePath, final String api,
-            final Map<String, Object> headersAsMap) {
-
+    private Response retrieveResponseForUpdateList(final String basePath, final String api, final Map<String, Object> headersAsMap) {
         return given()
             .auth()
             .oauth2(accessToken)
             .headers(headersAsMap)
             .baseUri(basePath)
             .basePath(api)
-            .when().get().then().extract().response();
+            .when().put().then().extract().response();
     }
 
 }
+

@@ -16,6 +16,24 @@
       "operationId": "post-publications",
       "format": "application/vnd.ms-azure-apim.policy.raw+xml",
       "templateFile": "pip-api-publications-create-policy.xml",
+      "errorActiion": "Stop"
+    },
+    {
+      "operationId": "create-lists",
+      "format": "application/vnd.ms-azure-apim.policy.raw+xml",
+      "templateFile": "pip-api-create-lists-policy.xml",
+      "errorAction": "Stop"
+    },
+    {
+      "operationId": "update-lists",
+      "format": "application/vnd.ms-azure-apim.policy.raw+xml",
+      "templateFile": "pip-api-update-lists-policy.xml",
+      "errorAction": "Stop"
+    },
+    {
+      "operationId": "delete-lists",
+      "format": "application/vnd.ms-azure-apim.policy.raw+xml",
+      "templateFile": "pip-api-delete-lists-policy.xml",
       "errorAction": "Stop"
     }
   ]

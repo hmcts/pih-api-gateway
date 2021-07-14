@@ -2,12 +2,7 @@ package uk.gov.hmcts.futurehearings.pip.unit.testing.testsuites;
 
 import io.restassured.response.Response;
 import lombok.extern.slf4j.Slf4j;
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.DisplayName;
-import org.junit.jupiter.api.MethodOrderer;
-import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.TestInstance;
-import org.junit.jupiter.api.TestMethodOrder;
+import org.junit.jupiter.api.*;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -20,19 +15,20 @@ import java.util.HashMap;
 import java.util.Map;
 
 import static io.restassured.RestAssured.given;
-import static uk.gov.hmcts.futurehearings.pip.unit.testing.utils.HealthCheckResponseVerifier.thenValidateResponseForHealthCheck;
+import static uk.gov.hmcts.futurehearings.pip.unit.testing.utils.HealthCheckResponseVerifier.thenValidateResponseForDeleteList;
 
 @Slf4j
-@SpringBootTest(classes = { Application.class })
+@SpringBootTest(classes = {Application.class})
 @ActiveProfiles("test")
 @ExtendWith(TestReporter.class)
 @TestMethodOrder(MethodOrderer.OrderAnnotation.class)
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
-@DisplayName("GET /health - PIP Health Check")
-public class GetPipHealthCheck {
+@DisplayName("DELETE /list - PIP Delete List")
+public class DELETE_PipList {
 
-    @Value("${healthCheckApiRootContext}")
-    private String healthCheckApiRootContext;
+    @Value("${listApiRootContext}")
+    private String listApiRootContext;
+
     @Value("${targetInstance}")
     private String targetInstance;
 
@@ -66,26 +62,24 @@ public class GetPipHealthCheck {
     }
 
     @Test
-    @DisplayName("Test for PIP Health Check")
+    @DisplayName("Test for Delete List from PIP")
     void testInvokeHealthCheckForPip() {
-        final Response response = whenHeatlhCheckEndPointIsInvoked();
-        thenValidateResponseForHealthCheck(response);
+        final Response response = whenDeleteListIsInvoked();
+        thenValidateResponseForDeleteList(response);
     }
 
-    private Response whenHeatlhCheckEndPointIsInvoked() {
-        return retrieveResourcesResponseForHealthCheck(targetInstance, healthCheckApiRootContext, headersAsMap);
+    private Response whenDeleteListIsInvoked() {
+        return retrieveResponseForDeleteList(targetInstance, listApiRootContext, headersAsMap);
     }
 
-    private Response retrieveResourcesResponseForHealthCheck(final String basePath, final String api,
-            final Map<String, Object> headersAsMap) {
-
+    private Response retrieveResponseForDeleteList(final String basePath, final String api, final Map<String, Object> headersAsMap) {
         return given()
             .auth()
             .oauth2(accessToken)
             .headers(headersAsMap)
             .baseUri(basePath)
             .basePath(api)
-            .when().get().then().extract().response();
+            .when().delete().then().extract().response();
     }
 
 }

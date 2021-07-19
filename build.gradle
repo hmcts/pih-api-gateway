@@ -132,7 +132,7 @@ project.tasks['sonarqube'].dependsOn jacocoTestReport
 sonarqube {
   properties {
     property "sonar.projectName", "PIP :: Publishing Management Interface API"
-    property "sonar.projectKey", "HMIAPI"
+    property "sonar.projectKey", "PIPAPI"
     property "sonar.host.url", "https://sonarcloud.io"
     property "sonar.organization", "hmcts"
     property "sonar.sources", "src/main/java,pipeline,infrastructure"

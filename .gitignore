@@ -10,6 +10,7 @@
 /src/functionalTest/resources/application-pip-functional.yaml
 /src/smokeTest/resources/application-pip-smoke.yaml
 /src/test/resources/application-pip-test.yaml
+/src/integrationTest/resources/application-pip-integration.yaml
 
 .gradle
 /build/

@@ -7,6 +7,18 @@
       "errorAction": "Stop"
     },
     {
+      "operationId": "get-publications",
+      "format": "application/vnd.ms-azure-apim.policy.raw+xml",
+      "templateFile": "pip-api-publications-get-policy.xml",
+      "errorAction": "Stop"
+    },
+    {
+      "operationId": "post-publications",
+      "format": "application/vnd.ms-azure-apim.policy.raw+xml",
+      "templateFile": "pip-api-publications-create-policy.xml",
+      "errorAction": "Stop"
+    },
+    {
       "operationId": "create-lists",
       "format": "application/vnd.ms-azure-apim.policy.raw+xml",
       "templateFile": "pip-api-create-lists-policy.xml",

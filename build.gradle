@@ -1,7 +1,6 @@
 plugins {
   id 'application'
   id 'checkstyle'
-  id 'pmd'
   id 'jacoco'
   id 'io.spring.dependency-management' version '1.0.11.RELEASE'
   id 'org.springframework.boot' version '2.4.5'
@@ -119,15 +118,6 @@ checkstyle {
   getConfigDirectory().set(new File(rootDir, 'config/checkstyle'))
 }
 
-pmd {
-  toolVersion = "6.18.0"
-  sourceSets = [sourceSets.main, sourceSets.test, sourceSets.functionalTest, sourceSets.integrationTest, sourceSets.smokeTest]
-  reportsDir = file("$project.buildDir/reports/pmd")
-  // https://github.com/pmd/pmd/issues/876
-  ruleSets = []
-  ruleSetFiles = files("config/pmd/ruleset.xml")
-}
-
 jacocoTestReport {
   executionData(test, integration)
   reports {
@@ -141,9 +131,12 @@ project.tasks['sonarqube'].dependsOn jacocoTestReport
 
 sonarqube {
   properties {
-    property "sonar.projectName", "Reform :: spring-boot-template"
-    property "sonar.projectKey", "uk.gov.hmcts.reform:spring-boot-template"
-    property "sonar.coverage.jacoco.xmlReportPaths", "${jacocoTestReport.reports.xml.destination.path}"
+    property "sonar.projectName", "PIP :: Publishing Management Interface API"
+    property "sonar.projectKey", "PIPAPI"
+    property "sonar.host.url", "https://sonarcloud.io"
+    property "sonar.organization", "hmcts"
+    property "sonar.sources", "src/main/java,pipeline,infrastructure"
+    property "sonar.tests", "src/test/java,src/acceptanceTest/java,src/functionalTest/java"
   }
 }
 

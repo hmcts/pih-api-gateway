@@ -12,13 +12,11 @@ import lombok.Setter;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.http.HttpStatus;
 import org.springframework.test.context.ActiveProfiles;
 import uk.gov.hmcts.reform.demo.Application;
 
 import static io.restassured.config.EncoderConfig.encoderConfig;
 import static uk.gov.hmcts.futurehearings.pip.smoke.common.header.factory.HeaderFactory.createHeader;
-import static uk.gov.hmcts.futurehearings.pip.smoke.common.security.OAuthTokenGenerator.generateOAuthToken;
 
 @Setter(AccessLevel.PUBLIC)
 @Getter(AccessLevel.PUBLIC)
@@ -51,29 +49,23 @@ public abstract class SmokeTest {
 
     private Map<String,String> headers = new HashMap<>();
 
-    private String authorizationToken;
-
     private String rootContext;
 
     @BeforeAll
     public void beforeAll(TestInfo info) {
-        log.debug("Test execution Class Initiated: " + info.getTestClass().get().getName());
+        if(info.getTestClass().isPresent()){
+            log.debug("Test execution Class Initiated: " + info.getTestClass().get().getName());
+        } else {
+            log.debug("Could not find class");
+        }
     }
 
     @BeforeAll
-    public void initialiseValues() throws Exception {
+    public void initialiseValues() {
         RestAssured.baseURI = targetInstance;
         RestAssured.useRelaxedHTTPSValidation();
         RestAssured.config = RestAssured.config()
             .encoderConfig(encoderConfig().appendDefaultContentCharsetToContentTypeIfUndefined(false));
-
-        this.authorizationToken = generateOAuthToken(token_apiURL,
-                                                     token_apiTenantId,
-                                                     grantType, clientID,
-                                                     clientSecret,
-                                                     scope,
-                                                     HttpStatus.OK);
-        this.setAuthorizationToken(authorizationToken);
 
         headers = createHeader();
     }

@@ -96,6 +96,12 @@ task smoke(type: Test) {
   description = "Runs Smoke Tests"
   testClassesDirs = sourceSets.smokeTest.output.classesDirs
   classpath = sourceSets.smokeTest.runtimeClasspath
+  include "uk/gov/hmcts/futurehearings/pip/smoke/**"
+  testLogging.showStandardStreams = true
+  systemProperties System.getProperties()
+  environment("APPINSIGHTS_INSTRUMENTATIONKEY", "test-key")
+  enableAssertions = true
+  scanForTestClasses = true
 }
 
 task acceptance(type: Test) {
@@ -256,6 +262,17 @@ dependencies {
   functionalTestImplementation sourceSets.test.runtimeClasspath
 
   smokeTestImplementation sourceSets.main.runtimeClasspath
+  smokeTestImplementation group: 'org.springframework.boot', name: 'spring-boot-starter', {
+    exclude group: 'org.hamcrest', module: 'hamcrest-core'
+  }
+  smokeTestCompile group: 'org.springframework.boot', name: 'spring-boot-starter', {
+    exclude group: 'org.hamcrest', module: 'hamcrest-core'
+  }
+  smokeTestCompile("org.springframework.boot:spring-boot-starter-test")
+  smokeTestAnnotationProcessor 'org.projectlombok:lombok:1.18.12'
+  smokeTestCompileOnly 'org.projectlombok:lombok:1.18.12'
+  smokeTestImplementation 'org.junit.jupiter:junit-jupiter-api:' + versions.junit
+  smokeTestImplementation group: 'io.rest-assured', name: 'rest-assured', version: versions.restAssured
 }
 
 mainClassName = 'uk.gov.hmcts.reform.demo.Application'

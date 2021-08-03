@@ -2,7 +2,10 @@ variable "prefix" {}
 variable "product" {}
 variable "environment" {}
 variable "location" {}
-variable "tags" {}
+variable "builtFrom" {
+  type        = string
+  description = "Build pipeline"
+}
 variable "virtual_network_type" {
   description = "Network type: None / External / Internal"
   default     = "None"
@@ -21,4 +24,14 @@ variable "secret_permissions" {
     "list",
     "delete"
   ]
+}
+
+module "ctags" {
+  source      = "git::https://github.com/hmcts/terraform-module-common-tags.git?ref=master"
+  environment = var.environment
+  product     = var.product
+  builtFrom   = var.builtFrom
+}
+locals {
+  common_tags = local.common_tags
 }

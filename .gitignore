@@ -35,3 +35,6 @@ bin/main/application.yaml
 *.ipr
 
 .DS_Store
+
+### Terraform ###
+/infrastructure/terraform/.terraform

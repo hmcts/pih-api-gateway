@@ -16,5 +16,5 @@ steps:
       secureFile: application-pip-${{ parameters.fileName }}.${{ parameters.fileExtension }}
   - script: |
       mkdir $(System.DefaultWorkingDirectory)${{ parameters.filePath }}
-      mv $(application_${{ parameters.fileName }}.secureFilePath) $(System.DefaultWorkingDirectory)${{ parameters.filePath }}application-${{ parameters.fileName }}.${{ parameters.fileExtension }}
-      ls -l $(System.DefaultWorkingDirectory)${{ parameters.filePath }}application-${{ parameters.fileName }}.${{ parameters.fileExtension }}
+      mv $(application_${{ parameters.fileName }}.secureFilePath) $(System.DefaultWorkingDirectory)${{ parameters.filePath }}application-pip-${{ parameters.fileName }}.${{ parameters.fileExtension }}
+      ls -l $(System.DefaultWorkingDirectory)${{ parameters.filePath }}application-pip-${{ parameters.fileName }}.${{ parameters.fileExtension }}

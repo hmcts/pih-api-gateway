@@ -8,11 +8,6 @@ open_api_spec_content_value        = "https://raw.githubusercontent.com/hmcts/re
 open_api_health_spec_content_value = "https://raw.githubusercontent.com/hmcts/reform-api-docs/master/docs/specs/pip-gateway-api-health.json"
 revision                           = "1"
 service_url                        = ""
-tags = {
-  "businessarea" : "cross-cutting",
-  "application" : "publication-information-platform",
-  "environment" : "sandbox"
-}
-enable_mock_header_string = "<set-header name=\"_EnableMocks\" exists-action=\"override\"><value>true</value></set-header>"
-virtual_network_type      = "None"
+enable_mock_header_string          = "<set-header name=\"_EnableMocks\" exists-action=\"override\"><value>true</value></set-header>"
+virtual_network_type               = "None"
 

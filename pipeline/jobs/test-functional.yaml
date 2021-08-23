@@ -40,10 +40,10 @@ jobs:
         parameters:
           zipName: test_functional_gradle
           directory: /build/reports/tests/functional
-      - template: ../steps/zip-test-results.yaml
-        parameters:
-          zipName: test_functional_serenity
-          directory: /target/site/serenity
+      #- template: ../steps/zip-test-results.yaml
+      #  parameters:
+      #    zipName: test_functional_serenity
+      #    directory: /target/site/serenity
       - template: ../steps/publish-test-results.yaml
         parameters:
           zipName: functional_tests

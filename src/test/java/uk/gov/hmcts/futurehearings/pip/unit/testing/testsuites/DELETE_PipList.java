@@ -19,7 +19,7 @@ import static uk.gov.hmcts.futurehearings.pip.unit.testing.utils.HealthCheckResp
 
 @Slf4j
 @SpringBootTest(classes = {Application.class})
-@ActiveProfiles("test")
+@ActiveProfiles("pip-test")
 @ExtendWith(TestReporter.class)
 @TestMethodOrder(MethodOrderer.OrderAnnotation.class)
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)

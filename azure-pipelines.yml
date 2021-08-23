@@ -130,21 +130,20 @@ stages:
                 storageContainer: $[dependencies.CreateStorage.outputs['createContainer.container']]
                 subscriptionKey: $[dependencies.ExportKeyVault.outputs['exportKeyVaultSecret.pip-apim-sub-key']]
 
-          - ${{ if or(eq(environment.name, 'stg')) }}:
-            - template: pipeline/jobs/test-acceptance.yaml
-              parameters:
-                displayName: Acceptance Test
-                dependsOn:
-                  - CreateStorage
-                  - ExportKeyVault
-                subscription: ${{ environment.subscription }}
-                subscriptionKey: $(subscriptionKey)
-                storageContainer: $(storageContainer)
-                variables:
-                  subscriptionKey: $[dependencies.ExportKeyVault.outputs['exportKeyVaultSecret.pip-apim-sub-key']]
-                  storageContainer: $[dependencies.CreateStorage.outputs['createContainer.container']]
+          - template: pipeline/jobs/test-acceptance.yaml
+            parameters:
+              displayName: Acceptance Test
+              dependsOn:
+                - CreateStorage
+                - ExportKeyVault
+              subscription: ${{ environment.subscription }}
+              subscriptionKey: $(subscriptionKey)
+              storageContainer: $(storageContainer)
+              variables:
+                subscriptionKey: $[dependencies.ExportKeyVault.outputs['exportKeyVaultSecret.pip-apim-sub-key']]
+                storageContainer: $[dependencies.CreateStorage.outputs['createContainer.container']]
     
-          - ${{ if or(eq(environment.name, 'stg')) }}:
+          - ${{ if or(eq(environment.name, 'test')) }}:
             - template: pipeline/jobs/test-smoke.yaml
               parameters:
                 displayName: Smoke Test
@@ -158,7 +157,7 @@ stages:
                   storageContainer: $[dependencies.CreateStorage.outputs['createContainer.container']]
                   subscriptionKey: $[dependencies.ExportKeyVault.outputs['exportKeyVaultSecret.pip-apim-sub-key']]
     
-          - ${{ if or(eq(environment.name, 'stg')) }}:
+          - ${{ if or(eq(environment.name, 'test')) }}:
             - template: pipeline/jobs/test-functional.yaml
               parameters:
                 displayName: Functional Test

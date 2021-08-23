@@ -59,8 +59,11 @@ stages:
             vmImage: 'ubuntu-18.04'
           steps:
             - bash: |
-                echo "env: ${{ environment.name }}"
+                echo "env: ${{ upper(environment.name) }}"
                 echo "stage: ${{ parameters.stage }}"
+            - ${{ if or(eq('${{ parameters.stage }}', 'ALL'), and(ne('${{ environment.name }}', 'prod'),contains('${{ parameters.stage }}', 'NONPROD')), eq('${{ parameters.stage }}', upper('${{ environment.name }}'))) }}:
+              - bash: |
+                  echo "Success: ${{ environment.name }}"
     - ${{ if or(eq('${{ parameters.stage }}', 'ALL'), and(ne('${{ environment.name }}', 'prod'),contains('${{ parameters.stage }}', 'NONPROD')), eq('${{ parameters.stage }}', upper('${{ environment.name }}'))) }}:
       - stage: Validate${{environment.name}}
         displayName: "Validate ${{ environment.name }}"

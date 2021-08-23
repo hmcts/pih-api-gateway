@@ -60,7 +60,7 @@ stages:
           environment: ${{ environment.name }}
 
   - ${{ each environment in parameters.environments }}:
-    - ${{ if or(contains('${{ parameters.stage }}', 'ALL'), and(ne('${{ environment.name }}', 'prod'),contains('${{ parameters.stage }}', 'NONPROD')), eq('${{ parameters.stage }}', upper('${{ environment.name }}')) }}:
+    - ${{ if or(contains('${{ parameters.stage }}', 'ALL'), and(ne('${{ environment.name }}', 'prod'),contains('${{ parameters.stage }}', 'NONPROD')), eq('${{ parameters.stage }}', upper('${{ environment.name }}'))) }}:
       - stage: Plan${{environment.name}}
         displayName: "Plan ${{ environment.name }}"
         dependsOn: Validate
@@ -143,7 +143,7 @@ stages:
                 subscriptionKey: $[dependencies.ExportKeyVault.outputs['exportKeyVaultSecret.pip-apim-sub-key']]
                 storageContainer: $[dependencies.CreateStorage.outputs['createContainer.container']]
     
-          - ${{ if or(eq(environment.name, 'test')) }}:
+          - ${{ if eq(environment.name, 'test') }}:
             - template: pipeline/jobs/test-smoke.yaml
               parameters:
                 displayName: Smoke Test
@@ -157,7 +157,7 @@ stages:
                   storageContainer: $[dependencies.CreateStorage.outputs['createContainer.container']]
                   subscriptionKey: $[dependencies.ExportKeyVault.outputs['exportKeyVaultSecret.pip-apim-sub-key']]
     
-          - ${{ if or(eq(environment.name, 'test')) }}:
+          - ${{ if eq(environment.name, 'test') }}:
             - template: pipeline/jobs/test-functional.yaml
               parameters:
                 displayName: Functional Test

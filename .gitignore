@@ -35,3 +35,9 @@ bin/main/application.yaml
 *.ipr
 
 .DS_Store
+
+## Ignore Terraform
+.terraform
+.idea/
+*terraform.lock.hcl
+**/**/override.tf

@@ -7,16 +7,16 @@ parameters:
     type: string
 
 steps:
-  - template: templates\ApiManagement\check-soft-deleted.yaml@azTemplates
+  - template: templates\Azure\Common\check-soft-deleted.yaml@azTemplates
     parameters: 
       subscriptionName: ${{ parameters.subscriptionName }}
-      apimName: ${{ parameters.apimName }}
-      resourceGroupName: ${{ parameters.resourceGroupName }}
+      resourceName: ${{ parameters.apimName }}
+      resourceLocation: $(location)
       variableName: available
       taskName: apim
   
   - ${{ if eq(variables['apim.available'], 'false') }}:
-    - template: templates\ApiManagement\purge.yaml@azTemplates
+    - template: templates\Azure\ApiManagement\purge.yaml@azTemplates
       parameters: 
         subscriptionName: ${{ parameters.subscriptionName }}
         apimName: ${{ parameters.apimName }}

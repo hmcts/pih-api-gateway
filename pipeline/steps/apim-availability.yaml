@@ -15,7 +15,7 @@ steps:
       variableName: available
       taskName: apim
   
-  - ${{ if (eq('$(apim.available)', 'true')) }}:
+  - ${{ if (eq(variables['apim.available'], 'true')) }}:
     - template: templates\ApiManagement\purge.yaml@azTemplates
       parameters: 
         subscriptionName: ${{ parameters.subscriptionName }}

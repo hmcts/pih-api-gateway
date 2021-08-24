@@ -11,6 +11,7 @@ parameters:
 
 jobs:
   - job: TerraformApply
+    timeoutInMinutes: 120
     dependsOn:
       - ${{ if parameters.dependsOn }}:
           - ${{ parameters.dependsOn }}

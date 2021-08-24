@@ -19,11 +19,11 @@ parameters:
     type: string
     default: ALL
     values:
-      - SBOX
-      - DEV
-      - TEST
-      - STG
-      - NONPROD
+      - sbox
+      - dev
+      - test
+      - stg
+      - nonprod
       - ALL
 
   - name: environments
@@ -59,9 +59,9 @@ stages:
             vmImage: 'ubuntu-18.04'
           steps:
             - bash: |
-                echo "env: ${{ upper(environment.name) }}"
+                echo "env: ${{ environment.name }}"
                 echo "stage: ${{ parameters.stage }}"
-            - ${{ if contains('${{ parameters.stage }}', '${{ upper(environment.name) }}') }}:
+            - ${{ if eq('${{ parameters.stage }}', '${{ environment.name }}') }}:
               - bash: |
                   echo "Success: ${{ environment.name }}"
     - ${{ if or(eq('${{ parameters.stage }}', 'ALL'), and(ne('${{ environment.name }}', 'prod'),contains('${{ parameters.stage }}', 'NONPROD')), eq('${{ parameters.stage }}', upper('${{ environment.name }}'))) }}:

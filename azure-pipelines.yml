@@ -9,7 +9,7 @@ resources:
     - repository: azTemplates
       type: github
       name: hmcts/azure-devops-templates
-      ref: refs/heads/VIH-7898
+      ref: refs/heads/master
       endpoint: hmcts
 
 parameters:
@@ -30,8 +30,16 @@ variables:
 stages:
 
   - ${{ each environment in parameters.environments }}:
-    - stage: Validate${{environment.name}}
+    - stage: Validate_${{environment.name}}
       displayName: "Validate ${{ environment.name }}"
+      ${{ if eq('${{ environment.name }}', 'dev' ) }}:
+        dependsOn: 'Test_sbox'
+      ${{ if eq('${{ environment.name }}', 'test' ) }}:
+        dependsOn: 'Test_dev'
+      ${{ if eq('${{ environment.name }}', 'stg' ) }}:
+        dependsOn: 'Test_test'
+      ${{ if eq('${{ environment.name }}', 'prod' ) }}:
+        dependsOn: 'Test_stg'
       jobs:
         - template: pipeline/jobs/terraform-validate.yaml
           parameters:
@@ -39,10 +47,10 @@ stages:
             subscription: 'DTS-SHAREDSERVICES-${{ upper(environment.name) }}'
             group: 'PIP-APIM-BUILD-${{ upper(environment.name) }}'
             environment: ${{ environment.name }}
-            
-    - stage: Plan${{environment.name}}
+  
+    - stage: Plan_${{environment.name}}
       displayName: "Plan ${{ environment.name }}"
-      dependsOn: Validate${{environment.name}}
+      dependsOn: Validate_${{environment.name}}
       condition: succeeded()
       jobs:
       - template: pipeline/jobs/terraform-plan.yaml
@@ -52,10 +60,23 @@ stages:
           group: 'PIP-APIM-BUILD-${{ upper(environment.name) }}'
           environment: ${{ environment.name }}
 
+    - stage: 'Wait_${{ environment.name }}'
+      dependsOn: 'Plan${{environment.name}}'
+      displayName: Wait ${{ environment.name }} 
 
-    - stage: Build${{environment.name}}
+      jobs:
+        - job: Wait
+          displayName: "Wait for approval"
+          pool: server
+          steps:
+            - template: pipeline/steps/wait.yml
+              parameters:
+                environment: ${{ environment.name }}
+
+
+    - stage: Build_${{environment.name}}
       displayName: "Apply ${{ environment.name }}"
-      dependsOn: Plan${{environment.name}}
+      dependsOn: Wait_${{ environment.name }}
       condition: succeeded()
       variables:
         - group: 'PIP-APIM-BUILD-${{ upper(environment.name) }}'
@@ -72,9 +93,9 @@ stages:
             dependsOn:
               - TerraformApply
 
-    - stage: Test${{environment.name}}
+    - stage: Test_${{environment.name}}
       displayName: "Test ${{ environment.name }}"
-      dependsOn: Build${{environment.name}}
+      dependsOn: Build_${{environment.name}}
       pool:
         vmImage: 'ubuntu-18.04'
       variables:

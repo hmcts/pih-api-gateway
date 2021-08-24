@@ -14,36 +14,15 @@ resources:
 
 parameters:
 
-  - name: stage
-    displayName: Stage to Run
-    type: string
-    default: ALL
-    values:
-      - sbox
-      - dev
-      - test
-      - stg
-      - nonprod
-      - ALL
-
   - name: environments
+    displayName: "Environments to run. Remove any you do not want to run on."
     type: object
     default:
     - name: sbox
-      subscription: DTS-SHAREDSERVICES-SBOX
-      group: PIP-APIM-BUILD-SBOX
-
     - name: dev
-      subscription: DTS-SHAREDSERVICES-DEV
-      group: PIP-APIM-BUILD-DEV
-
     - name: test
-      subscription: DTS-SHAREDSERVICES-TEST
-      group: PIP-APIM-BUILD-TEST
-
     #- name: stg
-    #  subscription: DTS-SHAREDSERVICES-STG
-    #  group: PIP-APIM-BUILD-STG
+    #- name: prod
 
 variables:
   - group: PIP-APIM-Common
@@ -51,138 +30,123 @@ variables:
 stages:
 
   - ${{ each environment in parameters.environments }}:
-    - stage: Try${{environment.name}}
-      displayName: "Try ${{ environment.name }}"
-      jobs:  
-        - job: tester
-          pool:
-            vmImage: 'ubuntu-18.04'
-          steps:
-            - bash: |
-                echo "env: $[ environment.name ]"
-                echo "stage: $[ parameters.stage ]"
-                echo "equal: ${{ eq('$[ parameters.stage ]', '$[ environment.name ]') }}"
-            - ${{ if eq('${{ parameters.stage }}', '${{ environment.name }}') }}:
-              - bash: |
-                  echo "Success: ${{ environment.name }}"
-    - ${{ if or(eq('${{ parameters.stage }}', 'ALL'), and(ne('${{ environment.name }}', 'prod'),contains('${{ parameters.stage }}', 'NONPROD')), eq('${{ parameters.stage }}', upper('${{ environment.name }}'))) }}:
-      - stage: Validate${{environment.name}}
-        displayName: "Validate ${{ environment.name }}"
-        jobs:
-          - template: pipeline/jobs/terraform-validate.yaml
-            parameters:
-              displayName: Validate ${{ environment.name }}
-              subscription: ${{ environment.subscription }}
-              group: ${{ environment.group }}
-              environment: ${{ environment.name }}
-              
-      - stage: Plan${{environment.name}}
-        displayName: "Plan ${{ environment.name }}"
-        dependsOn: Validate${{environment.name}}
-        condition: succeeded()
-        jobs:
-        - template: pipeline/jobs/terraform-plan.yaml
+    - stage: Validate${{environment.name}}
+      displayName: "Validate ${{ environment.name }}"
+      jobs:
+        - template: pipeline/jobs/terraform-validate.yaml
           parameters:
-            displayName: "Plan ${{ upper(environment.name) }}"
-            subscription: ${{ environment.subscription }}
-            group: ${{ environment.group }}
+            displayName: Validate ${{ environment.name }}
+            subscription: 'DTS-SHAREDSERVICES-${{ upper(environment.name) }}'
+            group: 'PIP-APIM-BUILD-${{ upper(environment.name) }}'
             environment: ${{ environment.name }}
+            
+    - stage: Plan${{environment.name}}
+      displayName: "Plan ${{ environment.name }}"
+      dependsOn: Validate${{environment.name}}
+      condition: succeeded()
+      jobs:
+      - template: pipeline/jobs/terraform-plan.yaml
+        parameters:
+          displayName: "Plan ${{ upper(environment.name) }}"
+          subscription: 'DTS-SHAREDSERVICES-${{ upper(environment.name) }}'
+          group: 'PIP-APIM-BUILD-${{ upper(environment.name) }}'
+          environment: ${{ environment.name }}
 
 
-      - stage: Build${{environment.name}}
-        displayName: "Apply ${{ environment.name }}"
-        dependsOn: Plan${{environment.name}}
-        condition: succeeded()
-        variables:
-          - group: ${{ environment.group }}
-        jobs:
-          - template: pipeline/jobs/terraform-apply.yaml
+    - stage: Build${{environment.name}}
+      displayName: "Apply ${{ environment.name }}"
+      dependsOn: Plan${{environment.name}}
+      condition: succeeded()
+      variables:
+        - group: 'PIP-APIM-BUILD-${{ upper(environment.name) }}'
+      jobs:
+        - template: pipeline/jobs/terraform-apply.yaml
+          parameters:
+            displayName: Build ${{environment.name}}
+            subscription: 'DTS-SHAREDSERVICES-${{ upper(environment.name) }}'
+        - template: pipeline/jobs/apply-policies.yaml
+          parameters:
+            displayName: Apply API Policies
+            subscription: 'DTS-SHAREDSERVICES-${{ upper(environment.name) }}'
+            environment: ${{ environment.name }}
+            dependsOn:
+              - TerraformApply
+
+    - stage: Test${{environment.name}}
+      displayName: "Test ${{ environment.name }}"
+      dependsOn: Build${{environment.name}}
+      pool:
+        vmImage: 'ubuntu-18.04'
+      variables:
+        - group: 'PIP-APIM-BUILD-${{ upper(environment.name) }}'
+      jobs:
+        - template: pipeline/jobs/create-storage.yaml
+          parameters:
+            displayName: Create Storage for Test Results
+            subscription: 'DTS-SHAREDSERVICES-${{ upper(environment.name) }}'
+
+        - template: pipeline/jobs/export-keyvault.yaml
+          parameters:
+            displayName: Read APIM Subscription Key
+            subscription: 'DTS-SHAREDSERVICES-${{ upper(environment.name) }}'
+
+        - template: pipeline/jobs/test-unit.yaml
+          parameters:
+            displayName: Unit Test
+            dependsOn:
+            - CreateStorage
+            - ExportKeyVault
+            subscription: 'DTS-SHAREDSERVICES-${{ upper(environment.name) }}'
+            subscriptionKey: $(subscriptionKey)
+            storageContainer: $(storageContainer)
+            variables:
+              storageContainer: $[dependencies.CreateStorage.outputs['createContainer.container']]
+              subscriptionKey: $[dependencies.ExportKeyVault.outputs['exportKeyVaultSecret.pip-apim-sub-key']]
+
+        - template: pipeline/jobs/test-acceptance.yaml
+          parameters:
+            displayName: Acceptance Test
+            dependsOn:
+              - CreateStorage
+              - ExportKeyVault
+            subscription: 'DTS-SHAREDSERVICES-${{ upper(environment.name) }}'
+            subscriptionKey: $(subscriptionKey)
+            storageContainer: $(storageContainer)
+            variables:
+              subscriptionKey: $[dependencies.ExportKeyVault.outputs['exportKeyVaultSecret.pip-apim-sub-key']]
+              storageContainer: $[dependencies.CreateStorage.outputs['createContainer.container']]
+  
+        - ${{ if eq(environment.name, 'test') }}:
+          - template: pipeline/jobs/test-smoke.yaml
             parameters:
-              displayName: Build ${{environment.name}}
-              subscription: ${{ environment.subscription }}
-          - template: pipeline/jobs/apply-policies.yaml
-            parameters:
-              displayName: Apply API Policies
-              subscription: ${{ environment.subscription }}
-              environment: ${{ environment.name }}
+              displayName: Smoke Test
               dependsOn:
-                - TerraformApply
-
-      - stage: Test${{environment.name}}
-        displayName: "Test ${{ environment.name }}"
-        dependsOn: Build${{environment.name}}
-        pool:
-          vmImage: 'ubuntu-18.04'
-        variables:
-          - group: ${{ environment.group }}
-        jobs:
-          - template: pipeline/jobs/create-storage.yaml
+                - CreateStorage
+                - ExportKeyVault
+              subscription: 'DTS-SHAREDSERVICES-${{ upper(environment.name) }}'
+              subscriptionKey: $(subscriptionKey)
+              storageContainer: $(storageContainer)
+              variables:
+                storageContainer: $[dependencies.CreateStorage.outputs['createContainer.container']]
+                subscriptionKey: $[dependencies.ExportKeyVault.outputs['exportKeyVaultSecret.pip-apim-sub-key']]
+  
+        - ${{ if eq(environment.name, 'test') }}:
+          - template: pipeline/jobs/test-functional.yaml
             parameters:
-              displayName: Create Storage for Test Results
-              subscription: ${{ environment.subscription }}
-
-          - template: pipeline/jobs/export-keyvault.yaml
-            parameters:
-              displayName: Read APIM Subscription Key
-              subscription: ${{ environment.subscription }}
-
-          - template: pipeline/jobs/test-unit.yaml
-            parameters:
-              displayName: Unit Test
+              displayName: Functional Test
               dependsOn:
               - CreateStorage
               - ExportKeyVault
-              subscription: ${{ environment.subscription }}
+              subscription: 'DTS-SHAREDSERVICES-${{ upper(environment.name) }}'
               subscriptionKey: $(subscriptionKey)
               storageContainer: $(storageContainer)
               variables:
                 storageContainer: $[dependencies.CreateStorage.outputs['createContainer.container']]
                 subscriptionKey: $[dependencies.ExportKeyVault.outputs['exportKeyVaultSecret.pip-apim-sub-key']]
-
-          - template: pipeline/jobs/test-acceptance.yaml
+        
+        - ${{ if or(eq(environment.name, 'sbox'), eq(environment.name, 'test')) }}:
+          - template: pipeline/jobs/test-codequality.yaml
             parameters:
-              displayName: Acceptance Test
+              displayName: Code Quality Test
               dependsOn:
-                - CreateStorage
-                - ExportKeyVault
-              subscription: ${{ environment.subscription }}
-              subscriptionKey: $(subscriptionKey)
-              storageContainer: $(storageContainer)
-              variables:
-                subscriptionKey: $[dependencies.ExportKeyVault.outputs['exportKeyVaultSecret.pip-apim-sub-key']]
-                storageContainer: $[dependencies.CreateStorage.outputs['createContainer.container']]
-    
-          - ${{ if eq(environment.name, 'test') }}:
-            - template: pipeline/jobs/test-smoke.yaml
-              parameters:
-                displayName: Smoke Test
-                dependsOn:
-                  - CreateStorage
-                  - ExportKeyVault
-                subscription: ${{ environment.subscription }}
-                subscriptionKey: $(subscriptionKey)
-                storageContainer: $(storageContainer)
-                variables:
-                  storageContainer: $[dependencies.CreateStorage.outputs['createContainer.container']]
-                  subscriptionKey: $[dependencies.ExportKeyVault.outputs['exportKeyVaultSecret.pip-apim-sub-key']]
-    
-          - ${{ if eq(environment.name, 'test') }}:
-            - template: pipeline/jobs/test-functional.yaml
-              parameters:
-                displayName: Functional Test
-                dependsOn:
-                - CreateStorage
-                - ExportKeyVault
-                subscription: ${{ environment.subscription }}
-                subscriptionKey: $(subscriptionKey)
-                storageContainer: $(storageContainer)
-                variables:
-                  storageContainer: $[dependencies.CreateStorage.outputs['createContainer.container']]
-                  subscriptionKey: $[dependencies.ExportKeyVault.outputs['exportKeyVaultSecret.pip-apim-sub-key']]
-          
-          - ${{ if or(eq(environment.name, 'sbox'), eq(environment.name, 'test')) }}:
-            - template: pipeline/jobs/test-codequality.yaml
-              parameters:
-                displayName: Code Quality Test
-                dependsOn:
-                - UnitTest
+              - UnitTest

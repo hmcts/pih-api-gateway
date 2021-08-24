@@ -61,7 +61,7 @@ stages:
           environment: ${{ environment.name }}
 
     - stage: 'Wait_${{ environment.name }}'
-      dependsOn: 'Plan${{environment.name}}'
+      dependsOn: 'Plan_${{environment.name}}'
       displayName: Wait ${{ environment.name }} 
 
       jobs:

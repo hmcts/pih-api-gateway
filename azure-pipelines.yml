@@ -59,9 +59,9 @@ stages:
             vmImage: 'ubuntu-18.04'
           steps:
             - bash: |
-                echo "env: ${{ environment.name }}"
-                echo "stage: ${{ parameters.stage }}"
-                echo "equal: ${{ eq('${{ parameters.stage }}', '$[ environment.name ]') }}"
+                echo "env: $[ environment.name ]"
+                echo "stage: $[ parameters.stage ]"
+                echo "equal: ${{ eq('$[ parameters.stage ]', '$[ environment.name ]') }}"
             - ${{ if eq('${{ parameters.stage }}', '${{ environment.name }}') }}:
               - bash: |
                   echo "Success: ${{ environment.name }}"

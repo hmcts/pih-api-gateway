@@ -18,9 +18,9 @@ steps:
   - bash: |
       echo "feedback: $feedback"
     env:
-      feedback: ${{ variables['apim.available'] }}
+      feedback: ${{ apim.available }}
 
-  - ${{ if eq(variables['apim.available'], 'false') }}:
+  - ${{ if eq(${{ apim.available }}, 'false') }}:
     - template: templates\Azure\ApiManagement\purge.yaml@azTemplates
       parameters: 
         subscriptionName: ${{ parameters.subscriptionName }}

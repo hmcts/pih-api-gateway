@@ -33,5 +33,5 @@ module "ctags" {
   builtFrom   = var.builtFrom
 }
 locals {
-  common_tags = local.common_tags
+  common_tags = module.ctags.common_tags
 }

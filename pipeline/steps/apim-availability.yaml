@@ -15,6 +15,11 @@ steps:
       variableName: available
       taskName: apim
   
+  - bash: |
+      echo "feedback: $feedback"
+    env:
+      feedback: ${{ variables['apim.available'] }}
+
   - ${{ if eq(variables['apim.available'], 'false') }}:
     - template: templates\Azure\ApiManagement\purge.yaml@azTemplates
       parameters: 

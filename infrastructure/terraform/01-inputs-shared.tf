@@ -29,7 +29,7 @@ variable "secret_permissions" {
 module "ctags" {
   source      = "git::https://github.com/hmcts/terraform-module-common-tags.git?ref=master"
   environment = var.environment
-  product     = var.product
+  product     = var.prefix
   builtFrom   = var.builtFrom
 }
 locals {

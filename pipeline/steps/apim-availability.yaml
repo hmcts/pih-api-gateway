@@ -7,11 +7,12 @@ parameters:
     type: string
 
 steps:
-  - template: templates\Azure\Common\check-soft-deleted.yaml@azTemplates
+  - template: templates\Azure\ApiManagement\check-name-availablity.yaml@azTemplates
     parameters: 
       subscriptionName: ${{ parameters.subscriptionName }}
       resourceName: ${{ parameters.apimName }}
       resourceLocation: $(location)
+      resourceGroupName: ${{ parameters.resourceGroupName }}
       variableName: available
       taskName: apim
   

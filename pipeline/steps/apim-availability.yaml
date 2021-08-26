@@ -21,4 +21,4 @@ steps:
       subscriptionName: ${{ parameters.subscriptionName }}
       apimName: ${{ parameters.apimName }}
       apimLocation: $(location)
-      condition: "eq('$(apim.available)','false')"
+      condition: "eq(variables['apim.available'],'false')"
